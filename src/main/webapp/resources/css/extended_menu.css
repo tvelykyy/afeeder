@@ -1,0 +1,80 @@
+#menu {
+	color: #black;
+	background: #008aff url(body_bg.gif) repeat-x;
+	margin: 3px 0 0 -1px;
+	width: 100%;
+	
+}
+ul.topnav {
+	
+	list-style: none;
+	padding: 0 20px;	
+	margin: -8;
+	float: left;
+	width: 98%;
+	background: #222;
+	font-size: 1.2em;
+	font: 12px normal Arial, Helvetica, sans-serif;
+	background: url(../images/menu/topnav_bg.gif) repeat-x;
+}
+ul.topnav li {
+	float: left;
+	margin: 0;	
+	padding: 0 35px 0 0;
+	position: relative; /*--Declare X and Y axis base--*/
+}
+ul.topnav li a, ul.topnav li a:visited{
+	padding: 10px 5px;
+	color: black;
+	font-weight: bold;
+	display: block;
+	text-decoration: none;
+	float: left;
+}
+ul.topnav li a:hover{
+	background: url(../images/menu/topnav_hover.gif) no-repeat center top;
+}
+ul.topnav li span { /*--Drop down trigger styles--*/
+	width: 17px;
+	height: 35px;
+	float: left;
+	background: url(../images/menu/subnav_btn.gif) no-repeat center top;
+}
+ul.topnav li span.subhover {background-position: center bottom; cursor: pointer;} /*--Hover effect for trigger--*/
+ul.topnav li ul.subnav {
+	z-index: 3;
+	list-style: none;
+	position: absolute; /*--Important - Keeps subnav from affecting main navigation flow--*/
+	left: 0; top: 35px;
+	background: #333;
+	margin: 0; padding: 0;
+	display: none;
+	float: left;
+	width: 170px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	border: 1px solid #91a4c2;
+}
+ul.topnav li ul.subnav li{
+	z-index: 3;
+	margin: 0; padding: 0;
+	border-top: 1px solid #c7d2e3; /*--Create bevel effect--*/
+	border-bottom: 1px solid #b8c8e1; /*--Create bevel effect--*/
+	clear: both;
+	width: 170px;
+}
+html ul.topnav li ul.subnav li a {
+	z-index: 3;
+	float: left;
+	width: 145px;
+	background: #d2ddee url(../images/menu/dropdown_linkbg.gif) no-repeat 8px center;
+	padding-left: 20px;
+}
+html ul.topnav li ul.subnav li a:hover { /*--Hover effect for subnav links--*/
+	background: #a4c5f7 url(../images/menu/dropdown_linkbg.gif) no-repeat 10px center; 
+}
+ul.subnav li a, ul.subnav li a:visited {
+	color: black;
+}
