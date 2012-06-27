@@ -92,7 +92,5 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	    jdbcTemplate.update(assignRoleForUserQuery, new Object[]{userId, roleId});
 	    
 	    return keyHolder.getKey().longValue();
-	}
-	
-	
+	}	
 }
