@@ -8,4 +8,5 @@ import com.tvelykyy.afeeder.domain.User;
 public interface UserService {
 	Long addUser(User user);
 	List<Role> getUserRoles(String login);
+	User getUserById(Long id);
 }

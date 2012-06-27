@@ -5,12 +5,15 @@ body {
 	font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
 }
 #wrapper {
-	margin:0;
-	padding:0;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    width: 800px;
 }
 #outer {
 	width:100%;
 	height:100%;
+	text
 }
 #footer {
 	width:100%;
@@ -75,4 +78,25 @@ body {
 .list-table li, .list-table hr {
 	margin-left: -15px;
 	margin-right: 15px;
+}
+
+.activity {
+	border: 1px dashed black;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.activity h5 {
+	background-color: #DEE9FC;
+	align: right;
+	margin: 0px;
+	padding: 5px;
+}
+
+.activity-text {
+	padding: 10px;
+}
+
+.activity-form-btn {
+	margin: 30px;
 }

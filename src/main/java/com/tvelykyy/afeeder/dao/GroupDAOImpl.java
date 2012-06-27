@@ -30,15 +30,16 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	private final String addGroupQuery = "INSERT INTO `group` (name) VALUES (:name)";
 	private final String removeGroupQuery = "DELETE FROM `group` WHERE id = ?";
 	private final String editGroupQuery = "UPDATE `group` SET name = (:name) WHERE id = (:id)";
+	private final String getGroupQuery = "SELECT * from `group` WHERE id = ?";
 	
 	public List<Group> listGroups() {
-		logger.info("GroupDAO: loading group list");
+		logger.info("Loading group list");
 		
 		return getJdbcTemplate().query(getAllGroupsQuery, new GroupRowMapper());
 	}
 	
 	public Long addGroup(Group group) {
-		logger.info("GroupDAO: adding new group");
+		logger.info("Adding new group");
 		
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(group);
 	    KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -48,16 +49,23 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	}
 	
 	public void removeGroup(Long id){
-		logger.info("GroupDAO: removing group id = " + id);
+		logger.info("Removing group id = " + id);
 		
 		getJdbcTemplate().update(removeGroupQuery, id);
 	}
 	
 	public void editGroup(Group group) {
-		logger.info("GroupDAO: editing group id = " + group.getId());
+		logger.info("Editing group = " + group);
 		
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(group);
 	    getNamedParameterJdbcTemplate().update(editGroupQuery, parameters);
 	}
+	
+	public Group getGroup(Long id) {
+		logger.info("Retrieving group id = " + id);
+		return getJdbcTemplate().queryForObject(getGroupQuery, new Object[] {id}, new GroupRowMapper());
+	}
+	
+	
 
 }

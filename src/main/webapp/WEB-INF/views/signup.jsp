@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
 				<td><form:label path="password"><spring:message code="label.user_password" /></form:label></td>
-				<td><form:input path="password"/></td>
+				<td><form:password path="password"/></td>
 				<td><form:errors path="password" cssClass="errors"/></td>
 			</tr>
 			<tr>

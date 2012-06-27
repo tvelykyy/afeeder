@@ -29,4 +29,8 @@ public class GroupServiceImpl implements GroupService {
 	public void editGroup(Group group) {
 		groupDAO.editGroup(group);
 	}
+	
+	public Group getGroup(Long id) {
+		return groupDAO.getGroup(id);
+	}
 }

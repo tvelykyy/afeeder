@@ -16,5 +16,10 @@
     <definition name="group" extends="base">
 		<put-attribute name="js" value="" />
 		<put-attribute name="body" value="/WEB-INF/views/group.jsp" />
-    </definition>  
+    </definition>
+    
+    <definition name="activity" extends="base">
+		<put-attribute name="js" value="" />
+		<put-attribute name="body" value="/WEB-INF/views/activity.jsp" />
+    </definition>    
 </tiles-definitions>

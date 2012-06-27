@@ -2,11 +2,8 @@ package com.tvelykyy.afeeder.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,7 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String login)
 			throws UsernameNotFoundException {
 		
-		User user = userDAO.getUser(login);
+		//Get user with roles
+		User user = userDAO.getUserByLogin(login, true);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		} else {

@@ -9,4 +9,5 @@ public interface GroupDAO {
 	Long addGroup(Group group);
 	void removeGroup(Long id);
 	void editGroup(Group group);
+	Group getGroup(Long id);
 }

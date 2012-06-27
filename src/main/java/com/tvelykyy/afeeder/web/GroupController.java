@@ -36,7 +36,7 @@ public class GroupController {
 	 * @return
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView listAllGroups() {
 		logger.info("GroupController: Loading group list");
 		ModelAndView mav = new ModelAndView("group");
 		List<Group> groups = groupService.listGroups();
@@ -51,7 +51,7 @@ public class GroupController {
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public @ResponseBody JsonResponse add(@ModelAttribute(value="group") Group group, 
+	public @ResponseBody JsonResponse addGroup(@ModelAttribute(value="group") Group group, 
 			BindingResult result ){
 		logger.info("GroupController: Adding new group");
 		
@@ -75,7 +75,7 @@ public class GroupController {
 	 */
 	
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
-	public @ResponseBody JsonResponse remove(@RequestParam Long id) {
+	public @ResponseBody JsonResponse removeGroup(@RequestParam Long id) {
 		logger.info("GroupController: Removing group id = " + id);
 		
 		JsonResponse res = new JsonResponse();
@@ -94,7 +94,7 @@ public class GroupController {
 	 * Edits group
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public @ResponseBody JsonResponse edit(@ModelAttribute(value="group") Group group, 
+	public @ResponseBody JsonResponse editGroup(@ModelAttribute(value="group") Group group, 
 			BindingResult result ){
 		logger.info("GroupController: Editing group id = " + group.getId());
 		
