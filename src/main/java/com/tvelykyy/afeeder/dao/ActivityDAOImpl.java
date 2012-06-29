@@ -36,28 +36,32 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 			"g.name as group_name " +
 			"FROM `activity` a " +
 			"INNER JOIN `user` u ON u.id = a.user_id " +
-			"INNER JOIN `group` g ON g.id = a.group_id;";
-	private String addActivityQuery = "INSERT INTO `activity` (text, user_id, group_id) VALUES(?, ?, ?)";
+			"INNER JOIN `group` g ON g.id = a.group_id ";
 	
-	@Override
+	private String getAllActivitiesSortedQuery = getAllActivitiesQuery +
+			"ORDER BY a.id DESC";
+	private String addActivityQuery = "INSERT INTO `activity` (text, user_id, group_id) VALUES(?, ?, ?)";
+	private String getActivitiesAfterQuery = getAllActivitiesQuery +
+			"WHERE a.id > ? ";
+	private String getRangeActivitiesQuery = getActivitiesAfterQuery +
+			"AND a.id < ?";
+	
 	public List<Activity> listAllActivities() {
 		logger.info("Loading activity list");
 		
-		return getJdbcTemplate().query(getAllActivitiesQuery, new ActivityRowMapper());
+		return getJdbcTemplate().query(getAllActivitiesSortedQuery, new ActivityRowMapper());
 	}
 
-	@Override
 	public List<Activity> listLatestActivities(Long afterId) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("Loading activity list after id = " + afterId);
+		
+		return getJdbcTemplate().query(getActivitiesAfterQuery, new ActivityRowMapper() , new Object[] {afterId});
 	}
 
-	@Override
 	public Long addActivity(final Activity activity) {
 		logger.info("Adding activity " + activity);
 		
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
-			@Override
 			public java.sql.PreparedStatement createPreparedStatement(
 					java.sql.Connection con) throws SQLException {
 				PreparedStatement ps = con.prepareStatement(addActivityQuery);
@@ -67,12 +71,17 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 				return ps;
 			}
 		};
-
 		
 	    KeyHolder keyHolder = new GeneratedKeyHolder();
-	    getJdbcTemplate().update(psc, keyHolder);
+	    getJdbcTemplate().update(psc, keyHolder);	    
 	    
 	    return keyHolder.getKey().longValue();
+	}
+	
+	public List<Activity> listRangeActivities(Long startId, Long endId) {
+		logger.info(String.format("Loading activity list start id = %s and end id = %s", startId, endId));
+		
+		return getJdbcTemplate().query(getRangeActivitiesQuery, new ActivityRowMapper() , new Object[] {startId, endId});
 	}
 	
 	

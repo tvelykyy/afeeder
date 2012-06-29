@@ -14,17 +14,18 @@ public class ActivityServiceImpl implements ActivityService {
 	@Autowired
 	private ActivityDAO activityDAO;
 
-	@Override
 	public List<Activity> listAllActivities() {
 		return activityDAO.listAllActivities();
 	}
 
-	@Override
 	public List<Activity> listLatestActivities(Long afterId) {
 		return activityDAO.listLatestActivities(afterId);
 	}
 
-	@Override
+	public List<Activity> listRangeActivities(Long startId, Long endId) {
+		return activityDAO.listRangeActivities(startId, endId);
+	}
+	
 	public Long addActivity(Activity acitivity) {
 		return activityDAO.addActivity(acitivity);
 	}	
