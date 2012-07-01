@@ -5,17 +5,27 @@
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
 <script type="text/javascript">
-showForm = function() {
+pollTimeout = 60000;
+
+function clearForm() {
+	$('.errors').html('');
+	$('#activity-text').val('');
+	$('#activity-group').val('');
+}
+
+function showForm() {
+	clearForm(); 
 	$('#activity-form-btn').html('<spring:message code="label.activity_hide_add_form"/>');
     $('#activity-form').show('slow');
 };
 
-hideForm = function() {
+function hideForm() {
+	clearForm(); 
 	$('#activity-form-btn').html('<spring:message code="label.activity_show_add_form"/>');
     $('#activity-form').hide('slow');
 };
 
-activityToHtml = function(act) {
+function activityToHtml(act) {
 	return $('<div>')
     .attr('class', 'activity')
     .attr('id', act.id)
@@ -44,7 +54,7 @@ function doPoll(){
 			} else {
 				alert('Error processing your request');
 			}
-    		setTimeout(doPoll,60000);
+    		setTimeout(doPoll, pollTimeout);
     	},
     	error: function(error) {
     		alert(error);
@@ -77,7 +87,7 @@ $(document).ready(function () {
 		  			$('#activities').prepend(activityToHtml(act));
 		  			
 		  			
-		  			if (act.id !=  latestId) {
+		  			if (act.id != latestId + 1) {
 		  				$.ajax({
 		  					type: "GET",
 		  					url: "activity/range",
@@ -86,7 +96,7 @@ $(document).ready(function () {
 		  						if (response.status == 'SUCCESS') {
 		  							for (act in response.result) {
 		  								$('#activities').children().first()
-		  							    	.after(activityToHtml(response.result[act]));
+		  									.after(activityToHtml(response.result[act]));
 		  							}
 		  						} else {
 		  							alert('Error processing your request');
@@ -97,14 +107,15 @@ $(document).ready(function () {
 		  					}
 		  				});
 		  			}
-		  			
+		  			$('#activity-form textarea').val('');
+			  		$('#activity-form select').val('');
+			  		hideForm();
 		  			
 		  		} else {
-		  			alert('Error processing your request');
+		  			for (tmp in response.result) {
+		  				$('.errors').html(response.result[tmp].defaultMessage + '<br>');	
+		  			}
 		  		}
-		  		$('#activity-form textarea').val('');
-		  		$('#activity-form select').val('');
-		  		hideForm();
 		    },
 		    error: function(response) {
 		    	alert(response);
@@ -115,25 +126,22 @@ $(document).ready(function () {
 	});
 	
 	//startPolling
-	setTimeout(doPoll, 60000);
+	setTimeout(doPoll, pollTimeout);
 });
 	
 </script>
 
-
-
 <form:form id="activity-form" method="post" style="display: none;" commandName="activity" modelAttribute="activity">
 	<table>
-		<tr><td><div class="errors"> </div></td></tr>
+		<tr><td colspan="2"><div class="errors"> </div></td></tr>
 		<tr>
 			<td><form:label path="text"><spring:message code="label.activity_text" /></form:label></td>
-			<td><form:textarea rows="3" cols="60" path="text"/></td>
-			<td><form:errors path="text" cssClass="errors"/></td>
+			<td><form:textarea id="activity-text" rows="3" cols="60" path="text"/></td>
 		</tr>
 		<tr>
 			<td><form:label path="group.id"><spring:message code="label.activity_group" /></form:label></td>
 			<td>
-				<form:select path="group.id">
+				<form:select id="activity-group" path="group.id">
 					<form:options items="${groups}" itemValue="id" itemLabel="name"/>
 				</form:select>
 			</td>

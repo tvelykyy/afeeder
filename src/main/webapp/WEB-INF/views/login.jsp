@@ -20,26 +20,27 @@
 		: ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} </font>
 	</c:if>
 	<form method="POST" action="<c:url value="/j_spring_security_check" />">
-	<table>
-		<tr>
-			<td><spring:message code="label.login" /></td>
-			<td><input type="text" name="j_username" /></td>
-		</tr>
-		<tr>
-			<td><spring:message code="label.password" /></td>
-			<td><input type="password" name="j_password" /></td>
-		</tr>
-		<tr>
-			<td><spring:message code="label.remember" /></td>
-			<td><input type="checkbox" name="_spring_security_remember_me" /></td>
-		</tr>
-		<tr>
-			<td colspan="2" align="right">
-				<input type="submit" value="Login" />
-			</td>
-		</tr>
-	</table>
+		<table>
+			<tr>
+				<td><spring:message code="label.login" /></td>
+				<td><input type="text" name="j_username" /></td>
+			</tr>
+			<tr>
+				<td><spring:message code="label.password" /></td>
+				<td><input type="password" name="j_password" /></td>
+			</tr>
+			<tr>
+				<td><spring:message code="label.remember" /></td>
+				<td><input type="checkbox" name="_spring_security_remember_me" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="right">
+					<input type="submit" value="Login" />
+				</td>
+			</tr>
+		</table>
 	</form>
+	<h3><a href="<c:url value="/signup"/>"><spring:message code="label.signup"/></a></h3>
 	</div>
 </body>
 </html>

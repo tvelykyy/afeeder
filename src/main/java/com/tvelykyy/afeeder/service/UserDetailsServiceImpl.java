@@ -1,7 +1,7 @@
 package com.tvelykyy.afeeder.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -20,7 +20,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private UserDAO userDAO;
 	
-	@SuppressWarnings("unchecked")
 	public UserDetails loadUserByUsername(String login)
 			throws UsernameNotFoundException {
 		
@@ -29,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		} else {
-			Collection authorities = new ArrayList();
+			List<GrantedAuthorityImpl> authorities = new ArrayList<GrantedAuthorityImpl>();
 			for (Role role : user.getRoles()) {
 				authorities.add(new GrantedAuthorityImpl(role.getName()));
 			}

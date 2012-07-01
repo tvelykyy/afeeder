@@ -1,8 +1,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -32,8 +31,10 @@
 					<div id="menu">
 					
 						<ul class="topnav">   
-							<li><a href="<c:url value="/"/>">Main</a></li>  
-							<li><a href="<c:url value="/groups"/>">Groups</a></li> 
+							<li><a href="<c:url value="/"/>">Main</a></li>
+							<sec:authorize access="hasRole('ROLE_ADMIN')">  
+								<li><a href="<c:url value="/group"/>">Group Management</a></li> 
+							</sec:authorize>
 							<li><a href="<c:url value="/logout"/>">Logout</a></li> 
 						</ul>  
 						

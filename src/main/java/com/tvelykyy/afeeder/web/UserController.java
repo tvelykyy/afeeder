@@ -3,6 +3,7 @@ package com.tvelykyy.afeeder.web;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,21 +12,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.jta.UserTransactionAdapter;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.tvelykyy.afeeder.domain.Group;
-import com.tvelykyy.afeeder.domain.JsonResponse;
 import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
-import com.tvelykyy.afeeder.service.GroupService;
+import com.tvelykyy.afeeder.domain.validation.UserValidator;
 import com.tvelykyy.afeeder.service.UserService;
 
 
@@ -33,7 +27,6 @@ import com.tvelykyy.afeeder.service.UserService;
  * Handles requests for the application group logic.
  */
 @Controller
-@RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private UserService userService;
@@ -47,19 +40,19 @@ public class UserController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute(value="user") User user, 
 			BindingResult result){
 		logger.info("UserController: Adding new user" + user);
 		
-		ValidationUtils.rejectIfEmpty(result, "name", "Name can not be empty.");
+		new UserValidator().validate(user, result);
 		
 		if(!result.hasErrors()){
 			user.hashPassword();
 			Long id = userService.addUser(user);
-			user.setRoles(userService.getUserRoles(user.getLogin()));
+			user.setRoles(userService.getUserRolesById(id));
 			
-			Collection authorities = new ArrayList();
+			List<GrantedAuthorityImpl> authorities = new ArrayList<GrantedAuthorityImpl>();
 			for (Role role : user.getRoles()) {
 				authorities.add(new GrantedAuthorityImpl(role.getName()));
 			}
@@ -71,7 +64,14 @@ public class UserController {
 			
 			return "redirect:/";
 		} else{
-			return "/register";
+			return "signup";
 		}
+	}
+	
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public String getRegisterPage(Map<String, Object> model) {
+		logger.info("Rendering signup page");
+		model.put("user", new User());
+		return "signup";
 	}
 }

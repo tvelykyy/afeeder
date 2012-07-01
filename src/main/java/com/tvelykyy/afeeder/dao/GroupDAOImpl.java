@@ -2,14 +2,11 @@ package com.tvelykyy.afeeder.dao;
 
 import java.util.List;
 
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -29,6 +26,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	private final String getAllGroupsQuery = "SELECT * FROM `group`";
 	private final String addGroupQuery = "INSERT INTO `group` (name) VALUES (:name)";
 	private final String removeGroupQuery = "DELETE FROM `group` WHERE id = ?";
+	private final String removeActivitiesByGroupQuery = "DELETE FROM `activity` WHERE group_id = ?";
 	private final String editGroupQuery = "UPDATE `group` SET name = (:name) WHERE id = (:id)";
 	private final String getGroupQuery = "SELECT * from `group` WHERE id = ?";
 	
@@ -48,10 +46,12 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	    return keyHolder.getKey().longValue();
 	}
 	
+	@Transactional(readOnly = false)
 	public void removeGroup(Long id){
 		logger.info("Removing group id = " + id);
-		
-		getJdbcTemplate().update(removeGroupQuery, id);
+		JdbcTemplate jdbcTemplate = getJdbcTemplate();
+		jdbcTemplate.update(removeActivitiesByGroupQuery, id);
+		jdbcTemplate.update(removeGroupQuery, id);
 	}
 	
 	public void editGroup(Group group) {
@@ -65,7 +65,4 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 		logger.info("Retrieving group id = " + id);
 		return getJdbcTemplate().queryForObject(getGroupQuery, new Object[] {id}, new GroupRowMapper());
 	}
-	
-	
-
 }

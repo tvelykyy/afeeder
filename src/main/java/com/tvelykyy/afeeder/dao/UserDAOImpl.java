@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
@@ -78,6 +78,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 		return roles;
 	}
 	
+	@Transactional(readOnly = false)
 	public Long addUser(User user) {
 		logger.info("Adding user = " + user);
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(user);

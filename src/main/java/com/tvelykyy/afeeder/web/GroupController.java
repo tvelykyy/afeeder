@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tvelykyy.afeeder.domain.Group;
 import com.tvelykyy.afeeder.domain.JsonResponse;
+import com.tvelykyy.afeeder.domain.validation.GroupValidator;
 import com.tvelykyy.afeeder.service.GroupService;
-
 
 /**
  * Handles requests for the application group logic.
@@ -56,7 +55,7 @@ public class GroupController {
 		logger.info("GroupController: Adding new group");
 		
 		JsonResponse res = new JsonResponse();
-		ValidationUtils.rejectIfEmpty(result, "name", "Name can not be empty.");
+		new GroupValidator().validate(group, result);
 		
 		if(!result.hasErrors()){
 			Long id = groupService.addGroup(group);
@@ -99,7 +98,7 @@ public class GroupController {
 		logger.info("GroupController: Editing group id = " + group.getId());
 		
 		JsonResponse res = new JsonResponse();
-		ValidationUtils.rejectIfEmpty(result, "name", "Name can not be empty.");
+		new GroupValidator().validate(group, result);
 		
 		if(!result.hasErrors()){
 			groupService.editGroup(group);

@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +21,7 @@ import com.tvelykyy.afeeder.domain.Activity;
 import com.tvelykyy.afeeder.domain.Group;
 import com.tvelykyy.afeeder.domain.JsonResponse;
 import com.tvelykyy.afeeder.domain.SecurityUser;
+import com.tvelykyy.afeeder.domain.validation.ActivityValidator;
 import com.tvelykyy.afeeder.service.ActivityService;
 import com.tvelykyy.afeeder.service.GroupService;
 import com.tvelykyy.afeeder.service.UserService;
@@ -66,15 +66,28 @@ public class ActivityController {
 	@RequestMapping(value = "activity/add", method = RequestMethod.POST)
 	public @ResponseBody JsonResponse addActivity(@ModelAttribute(value="activity") Activity activity, 
 			BindingResult result){
-		UserDetails userDetails =
-				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if (principal instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) principal;
+			activity.setUser(userService.getUserById(((SecurityUser)userDetails).getId(), false));
+		//could be string with login
+		} else {
+			String login = (String) principal;
+			activity.setUser(userService.getUserByLogin(login, false));
+		}
+		
+				 
 		
 		activity.setGroup(groupService.getGroup(activity.getGroup().getId()));
-		activity.setUser(userService.getUserById(((SecurityUser)userDetails).getId()));
+		
 		
 		logger.info("Adding new activity = " + activity);
 		
 		JsonResponse res = new JsonResponse();
+		
+		new ActivityValidator().validate(activity, result);
 		
 		if(!result.hasErrors()){
 			Long id = activityService.addActivity(activity);

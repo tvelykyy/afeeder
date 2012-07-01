@@ -19,12 +19,20 @@ public class UserServiceImpl implements UserService {
 		return userDAO.addUser(user);
 	}
 	
-	public List<Role> getUserRoles(String login) {
+	public List<Role> getUserRolesByLogin(String login) {
 		return userDAO.getUserRolesByLogin(login);
 	}
 	
-	public User getUserById(Long id){
-		return userDAO.getUserById(id, false);
+	public List<Role> getUserRolesById(Long id) {
+		return userDAO.getUserRolesById(id);
+	}
+	
+	public User getUserById(Long id, boolean withRoles){
+		return userDAO.getUserById(id, withRoles);
+	}
+	
+	public User getUserByLogin(String login, boolean withRoles){
+		return userDAO.getUserByLogin(login, withRoles);
 	}
 
 }

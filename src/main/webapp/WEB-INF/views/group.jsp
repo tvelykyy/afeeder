@@ -5,6 +5,66 @@
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
 <script type="text/javascript">
+function clearForm() {
+	//clear form values
+	$('#name').val('');
+	$('#id').val('');
+	
+	//clean errors div
+	$('.errors').html('');
+}
+function showForm() {
+	clearForm();
+	
+	$('#saveGroupForm').show('slow');
+	
+	$('#addBtn').html('<spring:message code="label.group_hide_form"/>');
+}
+
+function hideForm() {
+	clearForm();
+	
+	$('#saveGroupForm').hide('slow');
+	
+	$('#addBtn').html('<spring:message code="label.group_show_form"/>');
+}
+
+function editBtnHandler(caller) {
+	showForm();
+
+	$('#name').val(caller.closest('tr').find('.name').html());
+	$('#id').val(caller.closest('tr').find('.id').html());
+
+	return false;
+}
+
+function removeBtnHandler(caller) {
+	if (confirm('Are are sure want to delete group?')) {
+		//clean errors div
+		$('.errors').html('');
+		
+		var id = caller.closest('tr').attr('id');
+		var dataString = 'id='+ id;
+		
+		$.ajax({  
+			type: "POST",  
+		  	url: "<c:url value="/group/remove"/>",  
+		  	data: dataString,  
+		  	success: function(response) {
+		  		if(response.status == "SUCCESS"){
+		  			//Removing table row
+		  			$('tr[id="' + id + '"]').remove();
+		  		} else {
+		  			alert('Error processing your request');
+		  		}
+		    },
+		    error: function(response) {
+		    	alert(response);
+		    }
+		});  
+	}
+	return false;
+}
 $(document).ready(function () {
 	$("#saveBtn").click(function(){
 		//clean errors div
@@ -18,10 +78,10 @@ $(document).ready(function () {
 			successFn = function(response) {
 				if(response.status == "SUCCESS"){
 					$('tr[id="' + response.result.id + '"]').find('.name').html(response.result.name);
-		  			$('#saveGroupForm').hide('slow');
+		  			hideForm();
 		  		} else {
 		  			for (tmp in response.result) {
-		  				$('.errors').html(response.result[tmp].code + '<br>');	
+		  				$('.errors').html(response.result[tmp].defaultMessage + '<br>');	
 		  			}
 		  		}
 			};
@@ -30,13 +90,17 @@ $(document).ready(function () {
 			
 			successFn = function(response) {
 				if(response.status == "SUCCESS"){
+					var group = response.result;
 		  			$('#group-table > tbody:last')
 		  			.append($('<tr>')
+		  				.attr('id', group.id)
 		  		        .append($('<td>')
-		  		        	.append(response.result.id)
+		  		        	.attr('class', 'id')
+		  		        	.append(group.id)
 		  		        )
 		  		        .append($('<td>')
-		  		        	.append(response.result.name)
+		  		        	.attr('class', 'name')
+		  		        	.append(group.name)
 		  		        )
 		  		        .append($('<td>')
 		  		        	.append($('<a>')
@@ -53,10 +117,16 @@ $(document).ready(function () {
 		  		        	)
 		  		        )
 		  		    );
-		  			$('#saveGroupForm').hide('slow');
+		  			$('tr[id=' + group.id + '] .editBtn').click(function() {
+		  				return editBtnHandler($(this));
+		  			});
+		  			$('tr[id=' + group.id + '] .removeBtn').click(function() {
+		  				return removeBtnHandler($(this));
+		  			});
+		  			hideForm();
 		  		} else {
 		  			for (tmp in response.result) {
-		  				$('.errors').html(response.result[tmp].code + '<br>');	
+		  				$('.errors').html(response.result[tmp].defaultMessage + '<br>');	
 		  			}
 		  		}
 			};
@@ -75,60 +145,22 @@ $(document).ready(function () {
 		});  
 		return false;
 	});
-	$('.addBtn').click(function() {
-		//clear form values
-		$('#name').val('');
-		$('#id').val('');
-		
-		//hide form
-		$('#saveGroupForm').show('slow');
-		
-		//clean errors div
-		$('.errors').html('');
+	$('#addBtn').click(function() {
+		if ($('#saveGroupForm').is(':visible')) {
+			hideForm();
+		} else {
+			showForm();
+		}
 		
 		return false;
 	});
 	
 	$('.removeBtn').click(function() {
-		if (confirm('Are are sure want to delete group?')) {
-			//clean errors div
-			$('.errors').html('');
-			
-			var id = $(this).closest('tr').attr('id');
-			var dataString = 'id='+ id;
-			
-			$.ajax({  
-				type: "POST",  
-			  	url: "<c:url value="/group/remove"/>",  
-			  	data: dataString,  
-			  	success: function(response) {
-			  		if(response.status == "SUCCESS"){
-			  			//Removing table row
-			  			$('tr[id="' + id + '"]').remove();
-			  		} else {
-			  			alert('Error processing your request');
-			  		}
-			    },
-			    error: function(response) {
-			    	alert(response);
-			    }
-			});  
-		}
-		return false;
+		return removeBtnHandler($(this));
 	});
 	
 	$('.editBtn').click(function() {
-		//clear form values
-		$('#name').val($(this).closest('tr').find('.name').html());
-		$('#id').val($(this).closest('tr').find('.id').html());
-		
-		//hide form
-		$('#saveGroupForm').show('slow');
-		
-		//clean errors div
-		$('.errors').html('');
-		
-		return false;
+		return editBtnHandler($(this));
 	});
 });
 	
@@ -165,7 +197,7 @@ $(document).ready(function () {
 </form>
 
 
-<a class="addBtn" href="#"><spring:message code="label.group_add"/></a>
+<a id="addBtn" href="#"><spring:message code="label.group_show_form"/></a>
 
 <c:choose>
 	<c:when test="${!empty groups}">

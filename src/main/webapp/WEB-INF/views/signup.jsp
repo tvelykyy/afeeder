@@ -7,12 +7,14 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+	<link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/style.css"/>" />
 	<title><spring:message code="label.title" /></title>
 </head>
 <body>
 
 <div align="center">
-	<form:form method="post" action="user/add" commandName="user" modelAttribute="user">
+	<h3><spring:message code="label.signup"/></h3>
+	<form:form method="post" commandName="user" modelAttribute="user">
 		<table>
 			<tr>
 				<td><form:label path="login"><spring:message code="label.user_login" /></form:label></td>
