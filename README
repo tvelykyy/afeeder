@@ -1,0 +1,23 @@
+Activity feeder application Overview
+
+afeeder allows user to feed his activities across multiple users.
+
+Features:
+1) User registration and login build on top of the Spring Security Framework
+2) Activities are posted using AJAX jQuery
+3) Activities are updated by every 60 seconds AJAX request
+4) Activities are sorted by id descending
+5) If user posts his activity and there was updates by other users, their (other users)
+	activities will be automatically loaded by AJAX request.
+6) Activities are shared across all users. Every user sees all activities of other users
+7) Application supports 2 roles: ROLE_USER, ROLE_ADMIN
+8) Registration via signup form will grant user only with ROLE_USER role
+9) For now, user with ROLE_ADMIN can be created only via direct DB query
+10) Initiall database script provides 2 users (username=admin, password=password) and (username=user1, password=password)
+11) All passwords stored in DB are hashed with MD5 algorithm
+12) After successful registration user user will be automatically logged in
+13) Group Management section available only for ROLE_ADMIN user
+14) Whole Group Management logic is implemented via AJAX requests (single page logic)
+15) Whole Service Layes is covered by unit tests
+16) Tiles Framework is used for page rendering 
+
