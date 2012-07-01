@@ -43,7 +43,7 @@ public class GroupServiceTest {
 	}
 	
 	@Test
-	public void listGroups() {
+	public void listGroupsTest() {
 		List<Group> groupsBeforeAdd = groupService.listGroups();
 		
 		Group group = new Group("TestGroup");
@@ -56,7 +56,7 @@ public class GroupServiceTest {
 	}
 	
 	@Test
-	public void removeGroup() {
+	public void removeGroupTest() {
 		Group group = new Group("TestGroup");
 		group.setId(groupService.addGroup(group));
 		
@@ -67,7 +67,7 @@ public class GroupServiceTest {
 	}
 	
 	@Test
-	public void editGroup() {
+	public void editGroupTest() {
 		Group group = new Group("TestGroup");
 		group.setId(groupService.addGroup(group));
 		
@@ -81,7 +81,7 @@ public class GroupServiceTest {
 	}
 	
 	@Test
-	public void getGroup() {
+	public void getGroupTest() {
 		Group group = new Group("TestGroup");
 		group.setId(groupService.addGroup(group));
 		

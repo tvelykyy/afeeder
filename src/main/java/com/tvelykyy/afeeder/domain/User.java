@@ -23,6 +23,12 @@ public class User extends BaseModel {
 		this.name = name;
 	}
 	
+	public User(String login, String password, String name) {
+		this.login = login;
+		this.password = password;
+		this.name = name;
+	}
+	
 	public User(Long id, String login, String password, String name, List<Role> roles) {
 		this(id, login, password, name);
 		this.roles = roles;
