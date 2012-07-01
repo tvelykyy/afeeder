@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -63,6 +64,11 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	public Group getGroup(Long id) {
 		logger.info("Retrieving group id = " + id);
-		return getJdbcTemplate().queryForObject(getGroupQuery, new Object[] {id}, new GroupRowMapper());
+		try {
+			return getJdbcTemplate().queryForObject(getGroupQuery, new Object[] {id}, new GroupRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+		
 	}
 }
