@@ -31,12 +31,14 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	private final String editGroupQuery = "UPDATE `group` SET name = (:name) WHERE id = (:id)";
 	private final String getGroupQuery = "SELECT * from `group` WHERE id = ?";
 	
+	@Transactional
 	public List<Group> listGroups() {
 		logger.info("Loading group list");
 		
 		return getJdbcTemplate().query(getAllGroupsQuery, new GroupRowMapper());
 	}
 	
+	@Transactional
 	public Long addGroup(Group group) {
 		logger.info("Adding new group");
 		
@@ -55,6 +57,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 		jdbcTemplate.update(removeGroupQuery, id);
 	}
 	
+	@Transactional
 	public void editGroup(Group group) {
 		logger.info("Editing group = " + group);
 		
@@ -62,6 +65,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	    getNamedParameterJdbcTemplate().update(editGroupQuery, parameters);
 	}
 	
+	@Transactional
 	public Group getGroup(Long id) {
 		logger.info("Retrieving group id = " + id);
 		try {
