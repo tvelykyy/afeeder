@@ -17,7 +17,8 @@
 	
 	<c:if test="${not empty param.error}">
 		<font color="red">
-		: ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} </font>
+			<spring:message code="label.bad_credentials"/> 
+		</font>
 	</c:if>
 	<form method="POST" action="<c:url value="/j_spring_security_check" />">
 		<table>
