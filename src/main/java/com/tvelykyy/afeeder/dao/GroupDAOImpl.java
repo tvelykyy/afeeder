@@ -24,12 +24,12 @@ import com.tvelykyy.afeeder.domain.mapper.GroupRowMapper;
 public class GroupDAOImpl extends AbstractDAO implements GroupDAO {	
 	private static final Logger logger = LoggerFactory.getLogger(GroupDAOImpl.class);
 
-	private final String getAllGroupsQuery = "SELECT * FROM `group`";
-	private final String addGroupQuery = "INSERT INTO `group` (name) VALUES (:name)";
-	private final String removeGroupQuery = "DELETE FROM `group` WHERE id = ?";
-	private final String removeActivitiesByGroupQuery = "DELETE FROM `activity` WHERE group_id = ?";
-	private final String editGroupQuery = "UPDATE `group` SET name = (:name) WHERE id = (:id)";
-	private final String getGroupQuery = "SELECT * from `group` WHERE id = ?";
+	private static final String getAllGroupsQuery = "SELECT * FROM `group`";
+	private static final String addGroupQuery = "INSERT INTO `group` (name) VALUES (:name)";
+	private static final String removeGroupQuery = "DELETE FROM `group` WHERE id = ?";
+	private static final String removeActivitiesByGroupQuery = "DELETE FROM `activity` WHERE group_id = ?";
+	private static final String editGroupQuery = "UPDATE `group` SET name = (:name) WHERE id = (:id)";
+	private static final String getGroupQuery = "SELECT * from `group` WHERE id = ?";
 	
 	@Transactional
 	public List<Group> listGroups() {

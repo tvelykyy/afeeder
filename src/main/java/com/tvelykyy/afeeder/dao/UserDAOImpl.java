@@ -25,22 +25,24 @@ import com.tvelykyy.afeeder.domain.mapper.UserRowMapper;
 @Repository
 public class UserDAOImpl extends AbstractDAO implements UserDAO {	
 	private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
-	private final String getUserByLoginQuery = "SELECT * FROM `user` WHERE login = ?";
-	private final String getUserByIdQuery = "SELECT * FROM `user` WHERE id = ?";
-	private final String getUserRolesByLogin = "SELECT r.id, r.name FROM `role` r " +
+	
+	private static final String getUserByLoginQuery = "SELECT * FROM `user` WHERE login = ?";
+	private static final String getUserByIdQuery = "SELECT * FROM `user` WHERE id = ?";
+	private static final String getUserRolesByLogin = "SELECT r.id, r.name FROM `role` r " +
 			"INNER JOIN `user_role` ur on r.id = ur.role_id " +
 			"INNER JOIN `user` u on u.id = ur.user_id " +
 			"WHERE u.login = ?";
-	private final String getUserRolesById = "SELECT r.id, r.name FROM `role` r " +
+	private static final String getUserRolesById = "SELECT r.id, r.name FROM `role` r " +
 			"INNER JOIN `user_role` ur on r.id = ur.role_id " +
 			"INNER JOIN `user` u on u.id = ur.user_id " +
 			"WHERE u.id = ?";
-	private final String addUserQuery = "INSERT INTO `user` (login, password, name)" +
+	private static final String addUserQuery = "INSERT INTO `user` (login, password, name)" +
 			"VALUES (:login, :password, :name)";
-	private final String assignRoleForUserQuery = "INSERT INTO `user_role` (user_id, role_id)" +
+	private static final String assignRoleForUserQuery = "INSERT INTO `user_role` (user_id, role_id)" +
 			"VALUES (?, ?)";
+	
 	//Hardcoded
-	private final String getUserRoleId = "SELECT id FROM `role` WHERE name = 'ROLE_USER'";
+	private static final String getUserRoleId = "SELECT id FROM `role` WHERE name = 'ROLE_USER'";
 
 	public User getUserByLogin(String login, boolean withRoles) {
 		logger.info("Retrieving user login = " + login);

@@ -21,18 +21,18 @@ import com.tvelykyy.afeeder.domain.mapper.ActivityRowMapper;
 public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {	
 	private static final Logger logger = LoggerFactory.getLogger(ActivityDAOImpl.class);
 
-	private String getAllActivitiesQuery = "SELECT a.id, text, user_id, u.name as user_name, group_id, " +
+	private static final String getAllActivitiesQuery = "SELECT a.id, text, user_id, u.name as user_name, group_id, " +
 			"g.name as group_name " +
 			"FROM `activity` a " +
 			"INNER JOIN `user` u ON u.id = a.user_id " +
 			"INNER JOIN `group` g ON g.id = a.group_id ";
 	
-	private String getAllActivitiesSortedQuery = getAllActivitiesQuery +
+	private static final String getAllActivitiesSortedQuery = getAllActivitiesQuery +
 			"ORDER BY a.id DESC";
-	private String addActivityQuery = "INSERT INTO `activity` (text, user_id, group_id) VALUES(?, ?, ?)";
-	private String getActivitiesAfterQuery = getAllActivitiesQuery +
+	private static final String addActivityQuery = "INSERT INTO `activity` (text, user_id, group_id) VALUES(?, ?, ?)";
+	private static final String getActivitiesAfterQuery = getAllActivitiesQuery +
 			"WHERE a.id > ? ";
-	private String getRangeActivitiesQuery = getActivitiesAfterQuery +
+	private static final String getRangeActivitiesQuery = getActivitiesAfterQuery +
 			"AND a.id < ?";
 	
 	public List<Activity> listAllActivities() {
