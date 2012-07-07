@@ -6,22 +6,24 @@ http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-3.0.3.xsd">
 
 	<http access-denied-page="/error403" use-expressions="true">
-		<intercept-url pattern="/error403" access="hasAnyRole('ROLE_ANONYMOUS', 'ROLE_ADMIN', 'ROLE_USER')" />
+		<intercept-url pattern="/error403"
+			access="hasAnyRole('ROLE_ANONYMOUS', 'ROLE_ADMIN', 'ROLE_USER')" />
 		<intercept-url pattern="/login" access="hasRole('ROLE_ANONYMOUS')" />
 		<intercept-url pattern="/signup" access="hasRole('ROLE_ANONYMOUS')" />
-		<intercept-url pattern="/activity*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
+		<intercept-url pattern="/activity*"
+			access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
 		<intercept-url pattern="/group*" access="hasRole('ROLE_ADMIN')" />
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/login?error=true" />
 		<logout logout-url="/logout" logout-success-url="/login" />
-		
+
 		<remember-me />
 	</http>
 
 	<authentication-manager>
 		<authentication-provider user-service-ref="userDetailsService">
-            <password-encoder hash="md5" />
-        </authentication-provider>
+			<password-encoder hash="md5" />
+		</authentication-provider>
 	</authentication-manager>
 
 </beans:beans>
