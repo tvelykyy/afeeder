@@ -42,7 +42,7 @@ public class UserController {
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute(value="user") User user, 
 			BindingResult result){
-		logger.info("UserController: Adding new user" + user);
+		logger.debug("UserController: Adding new user" + user);
 		
 		new UserValidator().validate(user, result);
 		
@@ -69,7 +69,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String getRegisterPage(Map<String, Object> model) {
-		logger.info("Rendering signup page");
+		logger.debug("Rendering signup page");
 		model.put("user", new User());
 		return "signup";
 	}

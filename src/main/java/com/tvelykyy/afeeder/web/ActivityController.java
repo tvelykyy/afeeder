@@ -48,8 +48,7 @@ public class ActivityController {
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView listAllActivities(Map<String, Object> model) {
-		logger.info("ActivityController: Loading activity list");
-		
+		logger.debug("ActivityController: Loading activity list");
 		
 		ModelAndView mav = new ModelAndView("activity");
 		
@@ -83,7 +82,7 @@ public class ActivityController {
 		activity.setGroup(groupService.getGroup(activity.getGroup().getId()));
 		
 		
-		logger.info("Adding new activity = " + activity);
+		logger.debug("Adding new activity = " + activity);
 		
 		JsonResponse res = new JsonResponse();
 		
@@ -102,7 +101,7 @@ public class ActivityController {
 	
 	@RequestMapping(value = "/activity/latest", method = RequestMethod.GET)
 	public @ResponseBody JsonResponse listLatestActivities(@RequestParam Long id) {
-		logger.info("Getting latest activities after id = " + id);
+		logger.debug("Getting latest activities after id = " + id);
 		
 		JsonResponse res = new JsonResponse();
 		try {
@@ -118,7 +117,7 @@ public class ActivityController {
 	
 	@RequestMapping(value = "/activity/range", method = RequestMethod.GET)
 	public @ResponseBody JsonResponse listRangeActivities(@RequestParam Long startId, @RequestParam Long endId) {
-		logger.info(String.format("Getting range activities startId = %s and endId = %s", startId, endId));
+		logger.debug(String.format("Getting range activities startId = %s and endId = %s", startId, endId));
 		
 		JsonResponse res = new JsonResponse();
 		try {

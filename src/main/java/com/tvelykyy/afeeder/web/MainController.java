@@ -17,7 +17,7 @@ public class MainController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String getLoginPage() {
-		logger.info("Rendering login page");
+		logger.debug("Rendering login page");
 		
 		return "login";
 	}

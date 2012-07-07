@@ -36,19 +36,19 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 			"AND a.id < ?";
 	
 	public List<Activity> listAllActivities() {
-		logger.info("Loading activity list");
+		logger.debug("Loading activity list");
 		
 		return getJdbcTemplate().query(getAllActivitiesSortedQuery, new ActivityRowMapper());
 	}
 
 	public List<Activity> listLatestActivities(Long afterId) {
-		logger.info("Loading activity list after id = " + afterId);
+		logger.debug("Loading activity list after id = " + afterId);
 		
 		return getJdbcTemplate().query(getActivitiesAfterQuery, new ActivityRowMapper() , new Object[] {afterId});
 	}
 
 	public Long addActivity(final Activity activity) {
-		logger.info("Adding activity " + activity);
+		logger.debug("Adding activity " + activity);
 		
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
 			public java.sql.PreparedStatement createPreparedStatement(
@@ -68,7 +68,7 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 	}
 	
 	public List<Activity> listRangeActivities(Long startId, Long endId) {
-		logger.info(String.format("Loading activity list start id = %s and end id = %s", startId, endId));
+		logger.debug(String.format("Loading activity list start id = %s and end id = %s", startId, endId));
 		
 		return getJdbcTemplate().query(getRangeActivitiesQuery, new ActivityRowMapper() , new Object[] {startId, endId});
 	}

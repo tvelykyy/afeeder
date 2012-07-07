@@ -33,14 +33,14 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	@Transactional
 	public List<Group> listGroups() {
-		logger.info("Loading group list");
+		logger.debug("Loading group list");
 		
 		return getJdbcTemplate().query(getAllGroupsQuery, new GroupRowMapper());
 	}
 	
 	@Transactional
 	public Long addGroup(Group group) {
-		logger.info("Adding new group");
+		logger.debug("Adding new group");
 		
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(group);
 	    KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -51,7 +51,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	@Transactional(readOnly = false)
 	public void removeGroup(Long id){
-		logger.info("Removing group id = " + id);
+		logger.debug("Removing group id = " + id);
 		JdbcTemplate jdbcTemplate = getJdbcTemplate();
 		jdbcTemplate.update(removeActivitiesByGroupQuery, id);
 		jdbcTemplate.update(removeGroupQuery, id);
@@ -59,7 +59,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	@Transactional
 	public void editGroup(Group group) {
-		logger.info("Editing group = " + group);
+		logger.debug("Editing group = " + group);
 		
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(group);
 	    getNamedParameterJdbcTemplate().update(editGroupQuery, parameters);
@@ -67,7 +67,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	@Transactional
 	public Group getGroup(Long id) {
-		logger.info("Retrieving group id = " + id);
+		logger.debug("Retrieving group id = " + id);
 		try {
 			return getJdbcTemplate().queryForObject(getGroupQuery, new Object[] {id}, new GroupRowMapper());
 		} catch (EmptyResultDataAccessException e) {
