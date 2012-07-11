@@ -8,12 +8,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.tvelykyy.afeeder.domain.Activity;
 import com.tvelykyy.afeeder.domain.Group;
@@ -22,11 +17,7 @@ import com.tvelykyy.afeeder.service.ActivityService;
 import com.tvelykyy.afeeder.service.GroupService;
 import com.tvelykyy.afeeder.service.UserService;
 
-@ContextConfiguration(locations={"/data.xml", "/component-scan.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
-@Transactional
-public class ActivityServiceTest {
+public class ActivityServiceTest extends BaseTest {
 	@Autowired
 	private ActivityService activityService;
 	@Autowired

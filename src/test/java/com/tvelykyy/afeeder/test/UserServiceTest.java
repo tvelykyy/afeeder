@@ -8,22 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.service.UserService;
 
-@ContextConfiguration(locations={"/data.xml", "/component-scan.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
-@Transactional
-public class UserServiceTest {
+public class UserServiceTest extends BaseTest {
 	private final String PASSWORD_HASH = "5f4dcc3b5aa765d61d8327deb882cf99";
 	private final String USER_ROLE = "ROLE_USER";
 	
