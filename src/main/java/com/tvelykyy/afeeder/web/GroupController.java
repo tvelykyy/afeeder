@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -75,7 +76,7 @@ public class GroupController {
 	
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
 	public @ResponseBody JsonResponse removeGroup(@RequestParam Long id) {
-		logger.debug("GroupController: Removing group id = " + id);
+		logger.debug(MessageFormatter.format("GroupController: Removing group id = {}", id));
 		
 		JsonResponse res = new JsonResponse();
 		try {
@@ -95,7 +96,7 @@ public class GroupController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public @ResponseBody JsonResponse editGroup(@ModelAttribute(value="group") Group group, 
 			BindingResult result ){
-		logger.debug("GroupController: Editing group id = " + group.getId());
+		logger.debug(MessageFormatter.format("GroupController: Editing group id {}", group.getId()));
 		
 		JsonResponse res = new JsonResponse();
 		new GroupValidator().validate(group, result);

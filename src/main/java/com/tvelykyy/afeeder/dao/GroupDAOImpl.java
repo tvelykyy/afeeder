@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -40,7 +41,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	@Transactional
 	public Long addGroup(Group group) {
-		logger.debug("Adding new group");
+		logger.debug(MessageFormatter.format("Adding new group {}", group));
 		
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(group);
 	    KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -51,7 +52,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	@Transactional(readOnly = false)
 	public void removeGroup(Long id){
-		logger.debug("Removing group id = " + id);
+		logger.debug(MessageFormatter.format("Removing group id = {}", id));
 		JdbcTemplate jdbcTemplate = getJdbcTemplate();
 		jdbcTemplate.update(removeActivitiesByGroupQuery, id);
 		jdbcTemplate.update(removeGroupQuery, id);
@@ -59,7 +60,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	@Transactional
 	public void editGroup(Group group) {
-		logger.debug("Editing group = " + group);
+		logger.debug(MessageFormatter.format("Editing group = {}",group));
 		
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(group);
 	    getNamedParameterJdbcTemplate().update(editGroupQuery, parameters);
@@ -67,7 +68,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	
 	@Transactional
 	public Group getGroup(Long id) {
-		logger.debug("Retrieving group id = " + id);
+		logger.debug(MessageFormatter.format("Retrieving group id = {}", id));
 		try {
 			return getJdbcTemplate().queryForObject(getGroupQuery, new Object[] {id}, new GroupRowMapper());
 		} catch (EmptyResultDataAccessException e) {

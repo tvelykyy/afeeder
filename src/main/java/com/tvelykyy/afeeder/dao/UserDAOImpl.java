@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -45,7 +46,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	private static final String getUserRoleId = "SELECT id FROM `role` WHERE name = 'ROLE_USER'";
 
 	public User getUserByLogin(String login, boolean withRoles) {
-		logger.debug("Retrieving user login = " + login);
+		logger.debug(MessageFormatter.format("Retrieving user login = {}", login));
 		User user = getJdbcTemplate().queryForObject(getUserByLoginQuery, new Object[]{login}, 
 				new UserRowMapper());
 		if (withRoles) {
@@ -56,7 +57,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	}
 	
 	public User getUserById(Long id, boolean withRoles) {
-		logger.debug("Retrieving user id = " + id);
+		logger.debug(MessageFormatter.format("Retrieving user id = {}", id));
 		User user = getJdbcTemplate().queryForObject(getUserByIdQuery, new Object[]{id}, 
 				new UserRowMapper());
 		if (withRoles) {
@@ -67,14 +68,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	}
 
 	public List<Role> getUserRolesByLogin(String login) {
-		logger.debug("Retrieving user roles login = " + login);
+		logger.debug(MessageFormatter.format("Retrieving user roles login = {}",login));
 		List<Role> roles = getJdbcTemplate().query(getUserRolesByLogin, new Object[]{login}, 
 				new RoleRowMapper());
 		return roles;
 	}
 	
 	public List<Role> getUserRolesById(Long id) {
-		logger.debug("Retrieving user roles id = " + id);
+		logger.debug(MessageFormatter.format("Retrieving user roles id {} ", id));
 		List<Role> roles = getJdbcTemplate().query(getUserRolesById, new Object[]{id}, 
 				new RoleRowMapper());
 		return roles;
@@ -82,7 +83,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	
 	@Transactional(readOnly = false)
 	public Long addUser(User user) {
-		logger.debug("Adding user = " + user);
+		logger.debug(MessageFormatter.format("Adding user = ", user));
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(user);
 	    KeyHolder keyHolder = new GeneratedKeyHolder();
 	    

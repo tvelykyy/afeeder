@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -42,7 +43,7 @@ public class UserController {
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute(value="user") User user, 
 			BindingResult result){
-		logger.debug("UserController: Adding new user" + user);
+		logger.debug(MessageFormatter.format("Adding new user {}", user));
 		
 		new UserValidator().validate(user, result);
 		

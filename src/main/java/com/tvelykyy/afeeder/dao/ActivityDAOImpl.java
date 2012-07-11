@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -42,13 +43,13 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 	}
 
 	public List<Activity> listLatestActivities(Long afterId) {
-		logger.debug("Loading activity list after id = " + afterId);
+		logger.debug(MessageFormatter.format("Loading activity list after id = {}", afterId));
 		
 		return getJdbcTemplate().query(getActivitiesAfterQuery, new ActivityRowMapper() , new Object[] {afterId});
 	}
 
 	public Long addActivity(final Activity activity) {
-		logger.debug("Adding activity " + activity);
+		logger.debug(MessageFormatter.format("Adding activity {}", activity));
 		
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
 			public java.sql.PreparedStatement createPreparedStatement(
@@ -68,7 +69,7 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 	}
 	
 	public List<Activity> listRangeActivities(Long startId, Long endId) {
-		logger.debug(String.format("Loading activity list start id = %s and end id = %s", startId, endId));
+		logger.debug(String.format("Loading activity list start id = {} and end id = {}", startId, endId));
 		
 		return getJdbcTemplate().query(getRangeActivitiesQuery, new ActivityRowMapper() , new Object[] {startId, endId});
 	}

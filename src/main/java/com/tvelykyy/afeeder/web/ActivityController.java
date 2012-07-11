@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,7 +81,7 @@ public class ActivityController {
 		activity.setGroup(groupService.getGroup(activity.getGroup().getId()));
 		
 		
-		logger.debug("Adding new activity = " + activity);
+		logger.debug(MessageFormatter.format("Adding new activity {}", activity));
 		
 		JsonResponse res = new JsonResponse();
 		
@@ -99,7 +100,7 @@ public class ActivityController {
 	
 	@RequestMapping(value = "/activity/latest", method = RequestMethod.GET)
 	public @ResponseBody JsonResponse listLatestActivities(@RequestParam Long id) {
-		logger.debug("Getting latest activities after id = " + id);
+		logger.debug(MessageFormatter.format("Getting latest activities after id = {}", id));
 		
 		JsonResponse res = new JsonResponse();
 		try {
@@ -115,7 +116,7 @@ public class ActivityController {
 	
 	@RequestMapping(value = "/activity/range", method = RequestMethod.GET)
 	public @ResponseBody JsonResponse listRangeActivities(@RequestParam Long startId, @RequestParam Long endId) {
-		logger.debug(String.format("Getting range activities startId = %s and endId = %s", startId, endId));
+		logger.debug(MessageFormatter.format("Getting range activities startId = {} and endId = {}", startId, endId));
 		
 		JsonResponse res = new JsonResponse();
 		try {
