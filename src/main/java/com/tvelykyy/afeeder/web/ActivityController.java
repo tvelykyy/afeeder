@@ -77,8 +77,6 @@ public class ActivityController {
 			activity.setUser(userService.getUserByLogin(login, false));
 		}
 		
-				 
-		
 		activity.setGroup(groupService.getGroup(activity.getGroup().getId()));
 		
 		

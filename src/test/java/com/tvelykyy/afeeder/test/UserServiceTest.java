@@ -19,7 +19,7 @@ import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.service.UserService;
 
-@ContextConfiguration
+@ContextConfiguration(locations={"/data.xml", "/component-scan.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
 @Transactional

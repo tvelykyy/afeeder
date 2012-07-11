@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tvelykyy.afeeder.domain.Group;
 import com.tvelykyy.afeeder.service.GroupService;
 
-@ContextConfiguration
+@ContextConfiguration(locations={"/data.xml", "/component-scan.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
 @Transactional
