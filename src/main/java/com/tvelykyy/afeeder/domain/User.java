@@ -1,11 +1,6 @@
 package com.tvelykyy.afeeder.domain;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
-import org.springframework.security.crypto.codec.Hex;
 
 public class User extends BaseModel {
 	private String login;
