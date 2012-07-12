@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
+import com.tvelykyy.afeeder.domain.utils.UserUtils;
 import com.tvelykyy.afeeder.service.UserService;
 
 public class UserServiceTest extends BaseTest {
@@ -24,7 +25,7 @@ public class UserServiceTest extends BaseTest {
 	@Test
 	public void addUserTest() {
 		User user = new User("testuser", "password", "TestUser");
-		user.hashPassword();
+		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
 		
 		//User shouldn't have id on this stage
 		assertNull(user.getId());
@@ -37,7 +38,7 @@ public class UserServiceTest extends BaseTest {
 	@Test
 	public void getUserRoles() {
 		User user = new User("testuser", "password", "TestUser");
-		user.hashPassword();
+		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
 		Long id = userService.addUser(user);
 		user.setId(id);
 		
@@ -60,7 +61,7 @@ public class UserServiceTest extends BaseTest {
 	@Test
 	public void getUser(){
 		User user = new User("testuser", "password", "TestUser");
-		user.hashPassword();
+		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
 		Long id = userService.addUser(user);
 		user.setId(id);
 		

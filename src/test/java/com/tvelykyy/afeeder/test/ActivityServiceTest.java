@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.tvelykyy.afeeder.domain.Activity;
 import com.tvelykyy.afeeder.domain.Group;
 import com.tvelykyy.afeeder.domain.User;
+import com.tvelykyy.afeeder.domain.utils.UserUtils;
 import com.tvelykyy.afeeder.service.ActivityService;
 import com.tvelykyy.afeeder.service.GroupService;
 import com.tvelykyy.afeeder.service.UserService;
@@ -32,7 +33,7 @@ public class ActivityServiceTest extends BaseTest {
 	@Before
 	public void init() {
 		user = new User("testuser", "password", "TestUser");
-		user.hashPassword();
+		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
 		user.setId(userService.addUser(user));
 		
 		group = new Group("TestGroup");
