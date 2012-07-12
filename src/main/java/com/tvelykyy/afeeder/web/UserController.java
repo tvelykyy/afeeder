@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
+import com.tvelykyy.afeeder.domain.utils.UserUtils;
 import com.tvelykyy.afeeder.domain.validation.UserValidator;
 import com.tvelykyy.afeeder.service.UserService;
 
@@ -48,7 +49,7 @@ public class UserController {
 		new UserValidator().validate(user, result);
 		
 		if(!result.hasErrors()){
-			user.hashPassword();
+			user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
 			Long id = userService.addUser(user);
 			user.setRoles(userService.getUserRolesById(id));
 			

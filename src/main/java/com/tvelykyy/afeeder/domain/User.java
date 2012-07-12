@@ -71,21 +71,4 @@ public class User extends BaseModel {
 		return "User [login=" + login + ", password=" + password + ", name="
 				+ name + ", roles=" + roles + ", id=" + id + "]";
 	}
-	
-	public void hashPassword() {
-		byte[] bytesOfPassword = null;
-		try {
-			bytesOfPassword = password.getBytes("UTF-8");
-			MessageDigest md = null;
-			try {
-				md = MessageDigest.getInstance("MD5");
-				byte[] thedigest = md.digest(bytesOfPassword);
-				password = new String(Hex.encode(thedigest));
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			}
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
-	}
 }
