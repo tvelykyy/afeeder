@@ -10,21 +10,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.tvelykyy.afeeder.dao.ActivityDAO;
+import com.tvelykyy.afeeder.dao.GroupDAO;
+import com.tvelykyy.afeeder.dao.UserDAO;
 import com.tvelykyy.afeeder.domain.Activity;
 import com.tvelykyy.afeeder.domain.Group;
 import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.domain.utils.UserUtils;
-import com.tvelykyy.afeeder.service.ActivityService;
-import com.tvelykyy.afeeder.service.GroupService;
-import com.tvelykyy.afeeder.service.UserService;
 
-public class ActivityServiceTest extends BaseTest {
+public class ActivityDAOTest extends BaseTest {
 	@Autowired
-	private ActivityService activityService;
+	private ActivityDAO activityDAO;
 	@Autowired
-	private UserService userService;
+	private UserDAO userDAO;
 	@Autowired
-	private GroupService groupService;
+	private GroupDAO groupDAO;
 	
 	private Group group;
 	private User user;
@@ -34,10 +34,10 @@ public class ActivityServiceTest extends BaseTest {
 	public void init() {
 		user = new User("testuser", "password", "TestUser");
 		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
-		user.setId(userService.addUser(user));
+		user.setId(userDAO.addUser(user));
 		
 		group = new Group("TestGroup");
-		group.setId(groupService.addGroup(group));
+		group.setId(groupDAO.addGroup(group));
 		
 		activity = new Activity(user, group, "TestActivity");
 	}
@@ -47,45 +47,47 @@ public class ActivityServiceTest extends BaseTest {
 		//Activity shouldn't have id on this stage
 		assertNull(activity.getId());
 		
-		Long id = activityService.addActivity(activity);
+		Long id = activityDAO.addActivity(activity);
 		//Id shouldn't be null
 		assertNotNull(id);
 	}
 	
 	@Test 
 	public void listAllActivitiesTest() {
-		List<Activity> activitiesBeforeAdd = activityService.listAllActivities();
+		List<Activity> activitiesBeforeAdd = activityDAO.listAllActivities();
 		
-		activityService.addActivity(activity);
+		activityDAO.addActivity(activity);
 		
-		List<Activity> activitiesAfterAdd = activityService.listAllActivities();
+		List<Activity> activitiesAfterAdd = activityDAO.listAllActivities();
 		
 		assertEquals(activitiesBeforeAdd.size() + 1, activitiesAfterAdd.size());
 	}
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void listLatestActivitiesTest() {
 		//Adding 3 activities
-		Long id1 = activityService.addActivity(activity);
-		Long id2 = activityService.addActivity(activity);
-		Long id3 = activityService.addActivity(activity);
+		Long id1 = activityDAO.addActivity(activity);
+		Long id2 = activityDAO.addActivity(activity);
+		Long id3 = activityDAO.addActivity(activity);
 		
 		//Should return 2 activities with ids (id2, id3)
-		List<Activity> activities = activityService.listLatestActivities(id1);
+		List<Activity> activities = activityDAO.listLatestActivities(id1);
 		assertEquals(2, activities.size());
 
 	}
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void listRangeActivitiesTest() {
 		//Adding 4 activities
-		Long id1 = activityService.addActivity(activity);
-		Long id2 = activityService.addActivity(activity);
-		Long id3 = activityService.addActivity(activity);
-		Long id4 = activityService.addActivity(activity);
+		Long id1 = activityDAO.addActivity(activity);
+		Long id2 = activityDAO.addActivity(activity);
+		Long id3 = activityDAO.addActivity(activity);
+		Long id4 = activityDAO.addActivity(activity);
 		
 		//Should return 2 activities with ids (id2, id3)
-		List<Activity> activities = activityService.listRangeActivities(id1, id4);
+		List<Activity> activities = activityDAO.listRangeActivities(id1, id4);
 		assertEquals(2, activities.size());
 
 	}

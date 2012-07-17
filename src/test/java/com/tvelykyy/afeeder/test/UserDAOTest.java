@@ -10,17 +10,17 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.tvelykyy.afeeder.dao.UserDAO;
 import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.domain.utils.UserUtils;
-import com.tvelykyy.afeeder.service.UserService;
 
-public class UserServiceTest extends BaseTest {
+public class UserDAOTest extends BaseTest {
 	private final String PASSWORD_HASH = "5f4dcc3b5aa765d61d8327deb882cf99";
 	private final String USER_ROLE = "ROLE_USER";
 	
 	@Autowired
-	private UserService userService;
+	private UserDAO userDAO;
 	
 	@Test
 	public void addUserTest() {
@@ -30,7 +30,7 @@ public class UserServiceTest extends BaseTest {
 		//User shouldn't have id on this stage
 		assertNull(user.getId());
 		
-		Long id = userService.addUser(user);
+		Long id = userDAO.addUser(user);
 		//Id shouldn't be null
 		assertNotNull(id);
 	}
@@ -39,20 +39,20 @@ public class UserServiceTest extends BaseTest {
 	public void getUserRoles() {
 		User user = new User("testuser", "password", "TestUser");
 		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
-		Long id = userService.addUser(user);
+		Long id = userDAO.addUser(user);
 		user.setId(id);
 		
 		//By default, user is assigned one 'ROLE_USER' role
 		List<Role> roles = new ArrayList<Role>();
 		
-		//Testing userService.getRolesById
-		roles = userService.getUserRolesById(user.getId());
+		//Testing userDAO.getRolesById
+		roles = userDAO.getUserRolesById(user.getId());
 		
 		assertEquals(1, roles.size());
 		assertEquals(USER_ROLE, roles.get(0).getName());
 		
-		//Testing userService.getRolesByLogin
-		roles = userService.getUserRolesByLogin(user.getLogin());
+		//Testing userDAO.getRolesByLogin
+		roles = userDAO.getUserRolesByLogin(user.getLogin());
 		
 		assertEquals(1, roles.size());
 		assertEquals(USER_ROLE, roles.get(0).getName());
@@ -62,16 +62,16 @@ public class UserServiceTest extends BaseTest {
 	public void getUser(){
 		User user = new User("testuser", "password", "TestUser");
 		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
-		Long id = userService.addUser(user);
+		Long id = userDAO.addUser(user);
 		user.setId(id);
 		
 		User fetchedUser = null;
-		//Testing userService.getUserById
-		fetchedUser = userService.getUserById(user.getId(), false);
+		//Testing userDAO.getUserById
+		fetchedUser = userDAO.getUserById(user.getId(), false);
 		testUsersEquality(user, fetchedUser);
 		
-		//Testing userService.getUserByLogin
-		fetchedUser = userService.getUserByLogin(user.getLogin(), false);
+		//Testing userDAO.getUserByLogin
+		fetchedUser = userDAO.getUserByLogin(user.getLogin(), false);
 		testUsersEquality(user, fetchedUser);
 	}
 

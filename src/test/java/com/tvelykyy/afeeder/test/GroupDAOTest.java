@@ -9,12 +9,12 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.tvelykyy.afeeder.dao.GroupDAO;
 import com.tvelykyy.afeeder.domain.Group;
-import com.tvelykyy.afeeder.service.GroupService;
 
-public class GroupServiceTest extends BaseTest {
+public class GroupDAOTest extends BaseTest {
 	@Autowired
-	private GroupService groupService;
+	private GroupDAO groupDAO;
 	
 	@Test
 	public void addGroupTest() {
@@ -22,11 +22,11 @@ public class GroupServiceTest extends BaseTest {
 		//New group shouldn't have id
 		assertNull(group.getId());
 		
-		group.setId(groupService.addGroup(group));
+		group.setId(groupDAO.addGroup(group));
 		//Persisted group should have id
 		assertNotNull(group.getId());
 		
-		Group groupFromDB = groupService.getGroup(group.getId());
+		Group groupFromDB = groupDAO.getGroup(group.getId());
 		//We should be able to get group by newly created id
 		assertNotNull(groupFromDB);
 		//Whether groupFromDB name equals
@@ -35,12 +35,12 @@ public class GroupServiceTest extends BaseTest {
 	
 	@Test
 	public void listGroupsTest() {
-		List<Group> groupsBeforeAdd = groupService.listGroups();
+		List<Group> groupsBeforeAdd = groupDAO.listGroups();
 		
 		Group group = new Group("TestGroup");
-		groupService.addGroup(group);
+		groupDAO.addGroup(group);
 		
-		List<Group> groupsAfterAdd = groupService.listGroups();
+		List<Group> groupsAfterAdd = groupDAO.listGroups();
 		
 		//Group list should have +1 size after adding new group
 		assertEquals(groupsBeforeAdd.size() + 1, groupsAfterAdd.size());
@@ -49,23 +49,23 @@ public class GroupServiceTest extends BaseTest {
 	@Test
 	public void removeGroupTest() {
 		Group group = new Group("TestGroup");
-		group.setId(groupService.addGroup(group));
+		group.setId(groupDAO.addGroup(group));
 		
-		groupService.removeGroup(group.getId());
+		groupDAO.removeGroup(group.getId());
 		
 		//There should no group
-		assertNull(groupService.getGroup(group.getId()));
+		assertNull(groupDAO.getGroup(group.getId()));
 	}
 	
 	@Test
 	public void editGroupTest() {
 		Group group = new Group("TestGroup");
-		group.setId(groupService.addGroup(group));
+		group.setId(groupDAO.addGroup(group));
 		
 		group.setName("EditedTestGroup");
-		groupService.editGroup(group);
+		groupDAO.editGroup(group);
 		
-		Group editedGroup = groupService.getGroup(group.getId());
+		Group editedGroup = groupDAO.getGroup(group.getId());
 		
 		//Names should be equal
 		assertEquals(group.getName(), editedGroup.getName());
@@ -74,9 +74,9 @@ public class GroupServiceTest extends BaseTest {
 	@Test
 	public void getGroupTest() {
 		Group group = new Group("TestGroup");
-		group.setId(groupService.addGroup(group));
+		group.setId(groupDAO.addGroup(group));
 		
-		Group newGroup = groupService.getGroup(group.getId());
+		Group newGroup = groupDAO.getGroup(group.getId());
 		//Group should be null
 		assertNotNull(newGroup);
 		
