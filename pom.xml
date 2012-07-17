@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tvelykyy</groupId>
 	<artifactId>afeeder</artifactId>
@@ -206,6 +207,7 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 	</dependencies>
+	
     <build>
     	<finalName>afeeder</finalName>
         <plugins>
@@ -243,6 +245,37 @@
                     <mainClass>org.test.int1.Main</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+		        <groupId>org.mortbay.jetty</groupId>
+		        <artifactId>maven-jetty-plugin</artifactId>
+		        <version>6.1.26</version>
+		        <configuration>
+		                <scanIntervalSeconds>10</scanIntervalSeconds>
+		                <stopKey>foo</stopKey>
+		                <stopPort>9999</stopPort>
+		        </configuration>
+		        <executions>
+		                <execution>
+		                        <id>start-jetty</id>
+		                        <phase>pre-integration-test</phase>
+		                        <goals>
+		                                <goal>run</goal>
+		                        </goals>
+		                        <configuration>
+		                                <scanIntervalSeconds>0</scanIntervalSeconds>
+		                                <daemon>true</daemon>
+		                        </configuration>
+		                </execution>
+		                <execution>
+		                        <id>stop-jetty</id>
+		                        <phase>post-integration-test</phase>
+		                        <goals>
+		                                <goal>stop</goal>
+		                        </goals>
+		                </execution>
+		        </executions>
+			</plugin>
         </plugins>
     </build>
+    
 </project>
