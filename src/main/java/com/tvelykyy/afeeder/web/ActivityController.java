@@ -80,7 +80,6 @@ public class ActivityController {
 		
 		activity.setGroup(groupService.getGroup(activity.getGroup().getId()));
 		
-		
 		logger.debug(MessageFormatter.format("Adding new activity {}", activity));
 		
 		JsonResponse res = new JsonResponse();
