@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.tvelykyy.afeeder.dao.UserDAO;
 import com.tvelykyy.afeeder.domain.Role;
-import com.tvelykyy.afeeder.domain.SecurityUser;
 import com.tvelykyy.afeeder.domain.User;
+import com.tvelykyy.afeeder.domain.utils.UserUtils;
 
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -32,8 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			for (Role role : user.getRoles()) {
 				authorities.add(new GrantedAuthorityImpl(role.getName()));
 			}
-			return new SecurityUser(user.getLogin(), user.getPassword(), true, true, true, true,
-					authorities, user.getName(), user.getId());
+			return UserUtils.userToSecurityUser(user, authorities);
 		}
 	}	
 }

@@ -3,6 +3,7 @@ package com.tvelykyy.afeeder.test;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,6 +29,12 @@ public class ActivityControllerTest {
 	
 	@Mock
 	GroupService groupService;
+	
+	@Mock
+	SecurityContext securityContext;
+	
+	@Mock
+	Authentication authentication;
 	
 	@Before
 	public void setup() {
