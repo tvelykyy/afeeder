@@ -29,4 +29,8 @@ public class ActivityServiceImpl implements ActivityService {
 	public Long addActivity(Activity acitivity) {
 		return activityDAO.addActivity(acitivity);
 	}	
+	
+	public List<Activity> findActivities(String pattern) {
+		return activityDAO.findActivities(pattern);
+	}
 }

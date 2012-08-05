@@ -9,4 +9,5 @@ public interface ActivityService {
 	public List<Activity> listLatestActivities(Long afterId);
 	public List<Activity> listRangeActivities(Long startId, Long endId);
 	public Long addActivity(Activity activity);
+	public List<Activity> findActivities(String pattern);
 }

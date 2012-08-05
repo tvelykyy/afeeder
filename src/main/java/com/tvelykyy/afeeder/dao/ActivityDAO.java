@@ -9,4 +9,5 @@ public interface ActivityDAO {
 	public List<Activity> listLatestActivities(Long afterId);
 	public List<Activity> listRangeActivities(Long startId, Long endId);
 	public Long addActivity(Activity acitivity);
+	public List<Activity> findActivities(String pattern);
 }

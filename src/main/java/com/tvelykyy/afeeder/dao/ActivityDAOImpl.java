@@ -35,6 +35,8 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 			"WHERE a.id > ? ";
 	private static final String getRangeActivitiesQuery = getActivitiesAfterQuery +
 			"AND a.id < ?";
+	private static final String findActivitiesQuery = getAllActivitiesQuery +
+			"WHERE a.text LIKE ?";
 	
 	public List<Activity> listAllActivities() {
 		logger.debug("Loading activity list");
@@ -69,11 +71,15 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 	}
 	
 	public List<Activity> listRangeActivities(Long startId, Long endId) {
-		logger.debug(String.format("Loading activity list start id = {} and end id = {}", startId, endId));
+		logger.debug(MessageFormatter.format("Loading activity list start id = {} and end id = {}", startId, endId));
 		
 		return getJdbcTemplate().query(getRangeActivitiesQuery, new ActivityRowMapper() , new Object[] {startId, endId});
 	}
 	
-	
+	public List<Activity> findActivities(String pattern) {
+		logger.debug(MessageFormatter.format("Finding activities by pattern = {}", pattern));
+		
+		return getJdbcTemplate().query(findActivitiesQuery, new ActivityRowMapper(), new Object[] {"%" + pattern + "%"});
+	}
 	
 }
