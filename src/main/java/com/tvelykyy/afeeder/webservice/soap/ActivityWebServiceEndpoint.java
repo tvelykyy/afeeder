@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.tvelykyy.afeeder.domain.Activity;
 import com.tvelykyy.afeeder.domain.Group;
+import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.service.ActivityService;
 import com.tvelykyy.afeeder.service.GroupService;
 
@@ -29,6 +30,8 @@ public class ActivityWebServiceEndpoint {
 	
 	@WebMethod
 	public Long addActivity(Activity activity) {
+		//TODO user extraction by token
+		activity.setUser(new User(new Long(1)));
 		return activityService.addActivity(activity);
 	}
 	
