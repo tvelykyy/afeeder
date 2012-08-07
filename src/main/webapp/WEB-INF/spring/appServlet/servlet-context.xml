@@ -3,12 +3,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:cxf="http://cxf.apache.org/core"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
 		http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 		http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://cxf.apache.org/jaxws 
+		http://cxf.apache.org/schemas/jaxws.xsd
+		http://cxf.apache.org/core 
+		http://cxf.apache.org/schemas/core.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -33,9 +39,27 @@
 	
 	<context:component-scan base-package="com.tvelykyy.afeeder.web" />
 	<context:component-scan base-package="com.tvelykyy.afeeder.webservice" />
-
-    <beans:bean class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">
-    	<beans:property name="baseAddress" value="http://localhost:9999/" />
-    </beans:bean>
 	
+	<!--  <beans:bean id="authInterceptor" class="com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor"/>
+	
+	<cxf:bus>
+        <cxf:inInterceptors>
+            <beans:ref bean="authInterceptor"/>
+        </cxf:inInterceptors>
+        <cxf:outInterceptors>
+            <beans:ref bean="authInterceptor"/>
+       </cxf:outInterceptors>
+    </cxf:bus>-->
+	
+	<beans:bean id="soapWebService" class="com.tvelykyy.afeeder.webservice.soap.ActivityWebServiceEndpoint" />
+	
+	<jaxws:endpoint id="soapService" implementor="#soapWebService" />
+	
+	
+    <!--<beans:bean class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">
+    	<beans:property name="baseAddress" value="http://localhost:9999/" />
+    </beans:bean> -->
+	
+	
+    
 </beans:beans>

@@ -14,6 +14,7 @@ import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.service.ActivityService;
 import com.tvelykyy.afeeder.service.GroupService;
 
+@org.apache.cxf.interceptor.InInterceptors (interceptors = {"com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor" })
 @Service("activityWebServiceEndpoint")
 @WebService(name = "ActivityWebService")
 public class ActivityWebServiceEndpoint {

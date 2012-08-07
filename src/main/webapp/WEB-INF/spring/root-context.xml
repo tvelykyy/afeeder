@@ -7,6 +7,9 @@
 	<import resource="classpath:component-scan.xml" />
 	<import resource="classpath:data.xml" />
 	<import resource="security.xml" />
+	
+	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
