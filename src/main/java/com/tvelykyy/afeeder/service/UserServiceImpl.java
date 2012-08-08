@@ -1,5 +1,7 @@
 package com.tvelykyy.afeeder.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import com.tvelykyy.afeeder.domain.User;
 
 @Service
 public class UserServiceImpl implements UserService {
+	//30 minutes in milliseconds
+	private static final int EXPIRATION_TIME = 1800000;
 	
 	@Autowired
 	private UserDAO userDAO;
@@ -33,6 +37,35 @@ public class UserServiceImpl implements UserService {
 	
 	public User getUserByLogin(String login, boolean withRoles){
 		return userDAO.getUserByLogin(login, withRoles);
+	}
+
+	@Override
+	public User generateToken(User user) {
+		String token = userDAO.generateToken(user);
+		Timestamp lastTokenUsage = userDAO.getTokenLastUsage(user.getId());
+		User lightUser = new User(user.getId());
+		lightUser.setToken(token);
+		lightUser.setLastTokenUsage(lastTokenUsage);
+		return lightUser;
+	}
+
+	@Override
+	public boolean checkTokenExpiration(long userId) {
+		String token = userDAO.getToken(userId);
+		if (token != null) {
+			Timestamp tokenLastUsage = userDAO.getTokenLastUsage(userId);
+			Date currentTime = new Date();
+			if (tokenLastUsage == null || Math.abs(currentTime.getTime() - tokenLastUsage.getTime()) < EXPIRATION_TIME) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+
+	@Override
+	public User getUserByToken(String token) {
+		return null;
 	}
 
 }

@@ -87,8 +87,11 @@ CREATE TABLE  `afeeder`.`user` (
   `login` varchar(8) NOT NULL,
   `password` char(32) NOT NULL,
   `name` varchar(20) NOT NULL,
+  `token` char(32) DEFAULT NULL,
+  `last_token_usage` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `login` (`login`)
+  UNIQUE KEY `login` (`login`),
+  UNIQUE KEY `token` (`token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --

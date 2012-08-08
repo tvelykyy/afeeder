@@ -11,4 +11,7 @@ public interface UserService {
 	List<Role> getUserRolesById(Long id);
 	User getUserById(Long id, boolean withRoles);
 	User getUserByLogin(String login, boolean withRoles);
+	User generateToken(User user);
+	boolean checkTokenExpiration(long userid);
+	User getUserByToken(String token);
 }

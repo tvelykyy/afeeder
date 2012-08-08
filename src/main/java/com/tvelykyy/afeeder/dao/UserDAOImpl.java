@@ -1,5 +1,7 @@
 package com.tvelykyy.afeeder.dao;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -19,6 +21,7 @@ import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.domain.mapper.RoleRowMapper;
 import com.tvelykyy.afeeder.domain.mapper.UserRowMapper;
+import com.tvelykyy.afeeder.domain.utils.UserUtils;
 
 /**
  * UserDAO implementation
@@ -37,14 +40,22 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 			"INNER JOIN `user_role` ur on r.id = ur.role_id " +
 			"INNER JOIN `user` u on u.id = ur.user_id " +
 			"WHERE u.id = ?";
-	private static final String addUserQuery = "INSERT INTO `user` (login, password, name)" +
-			"VALUES (:login, :password, :name)";
-	private static final String assignRoleForUserQuery = "INSERT INTO `user_role` (user_id, role_id)" +
+	private static final String addUserQuery = "INSERT INTO `user` (login, password, name) " +
+			"VALUES (:login, :password, :name, NULL, NULL)";
+	private static final String assignRoleForUserQuery = "INSERT INTO `user_role` (user_id, role_id) " +
 			"VALUES (?, ?)";
+	private static final String generateTokenQuery = "UPDATE `user` SET token = ?, last_token_usage = now() " +
+			"WHERE id = ?";
+	private static final String getTokenLastUsageQuery = "SELECT last_token_usage FROM user " +
+			"WHERE id = ?";
+	
+	private static final String getTokenQuery = "SELECT token FROM user " +
+			"WHERE id = ?";
 	
 	//Hardcoded
 	private static final String getUserRoleId = "SELECT id FROM `role` WHERE name = 'ROLE_USER'";
 
+	@Override
 	public User getUserByLogin(String login, boolean withRoles) {
 		logger.debug(MessageFormatter.format("Retrieving user login = {}", login));
 		User user = getJdbcTemplate().queryForObject(getUserByLoginQuery, new Object[]{login}, 
@@ -56,6 +67,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 		return user;
 	}
 	
+	@Override
 	public User getUserById(Long id, boolean withRoles) {
 		logger.debug(MessageFormatter.format("Retrieving user id = {}", id));
 		User user = getJdbcTemplate().queryForObject(getUserByIdQuery, new Object[]{id}, 
@@ -67,6 +79,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 		return user;
 	}
 
+	@Override
 	public List<Role> getUserRolesByLogin(String login) {
 		logger.debug(MessageFormatter.format("Retrieving user roles login = {}",login));
 		List<Role> roles = getJdbcTemplate().query(getUserRolesByLogin, new Object[]{login}, 
@@ -74,6 +87,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 		return roles;
 	}
 	
+	@Override
 	public List<Role> getUserRolesById(Long id) {
 		logger.debug(MessageFormatter.format("Retrieving user roles id {} ", id));
 		List<Role> roles = getJdbcTemplate().query(getUserRolesById, new Object[]{id}, 
@@ -96,5 +110,37 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	    jdbcTemplate.update(assignRoleForUserQuery, new Object[]{userId, roleId});
 	    
 	    return keyHolder.getKey().longValue();
+	}
+
+	@Override
+	public String generateToken(User user) {
+		StringBuilder digest = new StringBuilder();
+		digest.append(user.getId());
+		digest.append(user.getPassword());
+		digest.append(new Date());
+		String token = UserUtils.hashMD5(digest.toString());
+		
+		getJdbcTemplate().update(generateTokenQuery, new Object[]{token, user.getId()});
+		
+		return token;
+	}
+
+	@Override
+	public Timestamp getTokenLastUsage(long userId) {
+		return  getJdbcTemplate().queryForObject(getTokenLastUsageQuery, 
+				new Object[]{userId}, Timestamp.class);
+	}
+
+	@Override
+	public String getToken(long userId) {
+		return  getJdbcTemplate().queryForObject(getTokenQuery, 
+				new Object[]{userId}, String.class);
+	}
+
+	@Override
+	public User getUserByToken(String token) {
+		return null;
 	}	
+	
+	
 }

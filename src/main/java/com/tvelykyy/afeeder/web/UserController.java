@@ -11,15 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tvelykyy.afeeder.domain.Activity;
+import com.tvelykyy.afeeder.domain.JsonResponse;
 import com.tvelykyy.afeeder.domain.Role;
+import com.tvelykyy.afeeder.domain.SecurityUser;
 import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.domain.utils.UserUtils;
+import com.tvelykyy.afeeder.domain.validation.ActivityValidator;
 import com.tvelykyy.afeeder.domain.validation.UserValidator;
 import com.tvelykyy.afeeder.service.UserService;
 
@@ -49,7 +55,7 @@ public class UserController {
 		new UserValidator().validate(user, result);
 		
 		if(!result.hasErrors()){
-			user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
+			user.setPassword(UserUtils.hashMD5(user.getPassword()));
 			Long id = userService.addUser(user);
 			user.setRoles(userService.getUserRolesById(id));
 			
@@ -74,5 +80,53 @@ public class UserController {
 		logger.debug("Rendering signup page");
 		model.put("user", new User());
 		return "signup";
+	}
+	
+	@RequestMapping(value = "/user/info", method = RequestMethod.GET)
+	public String getUserInfoPage(Map<String, Object> model) {
+		logger.debug("Rendering user info page");
+		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = null;
+		
+		if (principal instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) principal;
+			user = userService.getUserById(((SecurityUser)userDetails).getId(), true);
+		//could be string with login
+		} else {
+			String login = (String) principal;
+			user = userService.getUserByLogin(login, true);
+		}
+		
+		model.put("user", user);
+		
+		boolean tokenActive = userService.checkTokenExpiration(user.getId());
+		model.put("tokenActive", tokenActive);
+		return "userinfo";
+	}
+	
+	@RequestMapping(value = "user/generatetoken", method = RequestMethod.POST)
+	public @ResponseBody JsonResponse addActivity(){
+		User user = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if (principal instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) principal;
+			user = userService.getUserById(((SecurityUser)userDetails).getId(), false);
+		//could be string with login
+		} else {
+			String login = (String) principal;
+			user = userService.getUserByLogin(login, false);
+		}
+		
+		logger.debug(MessageFormatter.format("Generating new token for user = {}", user));
+		
+		JsonResponse res = new JsonResponse();
+		
+		
+		String token = userService.generateToken(user);
+		res.setSuccess(token);
+			 
+		return res;
 	}
 }

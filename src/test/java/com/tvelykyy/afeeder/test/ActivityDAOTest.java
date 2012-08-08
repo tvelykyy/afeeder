@@ -33,7 +33,7 @@ public class ActivityDAOTest extends BaseTest {
 	@Before
 	public void init() {
 		user = new User("testuser", "password", "TestUser");
-		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
+		user.setPassword(UserUtils.hashMD5(user.getPassword()));
 		user.setId(userDAO.addUser(user));
 		
 		group = new Group("TestGroup");

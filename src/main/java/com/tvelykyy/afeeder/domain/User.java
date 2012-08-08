@@ -1,5 +1,6 @@
 package com.tvelykyy.afeeder.domain;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class User extends BaseModel {
@@ -7,6 +8,8 @@ public class User extends BaseModel {
 	private String password;
 	private String name;
 	private List<Role> roles;
+	private String token;
+	private Timestamp lastTokenUsage;
 	
 	public User() {
 	}
@@ -65,9 +68,26 @@ public class User extends BaseModel {
 		this.roles = roles;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Timestamp getLastTokenUsage() {
+		return lastTokenUsage;
+	}
+
+	public void setLastTokenUsage(Timestamp lastTokenUsage) {
+		this.lastTokenUsage = lastTokenUsage;
+	}
+
 	@Override
 	public String toString() {
 		return "User [login=" + login + ", password=" + password + ", name="
-				+ name + ", roles=" + roles + ", id=" + id + "]";
+				+ name + ", roles=" + roles + ", token=" + token
+				+ ", lastTokenUsage=" + lastTokenUsage + "]";
 	}
 }

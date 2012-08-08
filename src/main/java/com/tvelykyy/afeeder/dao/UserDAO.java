@@ -1,14 +1,19 @@
 package com.tvelykyy.afeeder.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
 
 public interface UserDAO {
-	public User getUserByLogin(String login, boolean withRoles);
-	public User getUserById(Long id, boolean withRoles);
-	public List<Role> getUserRolesByLogin(String login);
-	public List<Role> getUserRolesById(Long id);
-	public Long addUser(User user);
+	User getUserByLogin(String login, boolean withRoles);
+	User getUserById(Long id, boolean withRoles);
+	List<Role> getUserRolesByLogin(String login);
+	List<Role> getUserRolesById(Long id);
+	Long addUser(User user);
+	String generateToken(User user);
+	Timestamp getTokenLastUsage(long userid);
+	User getUserByToken(String token);
+	String getToken(long userId);
 }

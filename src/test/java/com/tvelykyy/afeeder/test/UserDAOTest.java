@@ -25,7 +25,7 @@ public class UserDAOTest extends BaseTest {
 	@Test
 	public void addUserTest() {
 		User user = new User("testuser", "password", "TestUser");
-		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
+		user.setPassword(UserUtils.hashMD5(user.getPassword()));
 		
 		//User shouldn't have id on this stage
 		assertNull(user.getId());
@@ -38,7 +38,7 @@ public class UserDAOTest extends BaseTest {
 	@Test
 	public void getUserRoles() {
 		User user = new User("testuser", "password", "TestUser");
-		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
+		user.setPassword(UserUtils.hashMD5(user.getPassword()));
 		Long id = userDAO.addUser(user);
 		user.setId(id);
 		
@@ -61,7 +61,7 @@ public class UserDAOTest extends BaseTest {
 	@Test
 	public void getUser(){
 		User user = new User("testuser", "password", "TestUser");
-		user.setPassword(UserUtils.hashPasswordMD5(user.getPassword()));
+		user.setPassword(UserUtils.hashMD5(user.getPassword()));
 		Long id = userDAO.addUser(user);
 		user.setId(id);
 		

@@ -12,7 +12,7 @@ import com.tvelykyy.afeeder.domain.SecurityUser;
 import com.tvelykyy.afeeder.domain.User;
 
 public class UserUtils {
-	public static String hashPasswordMD5(String password) {
+	public static String hashMD5(String password) {
 		byte[] bytesOfPassword = null;
 		try {
 			bytesOfPassword = password.getBytes("UTF-8");

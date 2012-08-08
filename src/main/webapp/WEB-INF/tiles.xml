@@ -25,4 +25,9 @@
 		<put-attribute name="js" value="" />
 		<put-attribute name="body" value="/WEB-INF/views/activity.jsp" />
 	</definition>
+	
+	<definition name="userinfo" extends="base">
+		<put-attribute name="js" value="" />
+		<put-attribute name="body" value="/WEB-INF/views/userinfo.jsp" />
+	</definition>
 </tiles-definitions>

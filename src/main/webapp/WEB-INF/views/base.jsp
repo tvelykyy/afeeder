@@ -35,6 +35,7 @@
 							<sec:authorize access="hasRole('ROLE_ADMIN')">  
 								<li><a href="<c:url value="/group"/>">Group Management</a></li> 
 							</sec:authorize>
+							<li><a href="<c:url value="/user/info"/>">My Account</a></li>
 							<li><a href="<c:url value="/logout"/>">Logout</a></li> 
 						</ul>  
 						
