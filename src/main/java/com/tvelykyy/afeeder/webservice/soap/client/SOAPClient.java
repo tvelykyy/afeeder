@@ -29,19 +29,25 @@ public class SOAPClient {
 	private static final String INPUT_ACTIVITY_TEXT_MESSAGE = "Input Activity text:";
 	private static final String CHOOSE_GROUP_MESSAGE = "Choose group id:";
 	private static final String ACTIVITY_ADDED_MESSAGE = "Activity has been posted";
+	private static final String INVALID_INVOCATION_MESSAGE = "Invalid invocation. One parameter should be passed - Authorization Token.";
 	
 	private static Scanner scanner = new Scanner(System.in);
 	private static ActivityWebService servicePort = new ActivityWebServiceEndpointService()
 														.getActivityWebServicePort();
 	public static void main(String[] args) {
-		String token = args[0];
-		Map<String, Object> req_ctx = ((BindingProvider)servicePort).getRequestContext();
-		
-		Map<String, List<String>> headers = new HashMap<String, List<String>>();
-        headers.put("AuthToken", Collections.singletonList(token));
-        req_ctx.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
-		
-		showDialog(WELCOME_MESSAGE);
+		//One argument should be passed
+		if (args.length != 1) {
+			System.err.println(INVALID_INVOCATION_MESSAGE);
+		} else {
+			String token = args[0];
+			Map<String, Object> req_ctx = ((BindingProvider)servicePort).getRequestContext();
+			
+			Map<String, List<String>> headers = new HashMap<String, List<String>>();
+	        headers.put("AuthToken", Collections.singletonList(token));
+	        req_ctx.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
+			
+			showDialog(WELCOME_MESSAGE);
+		}
 	}
 
 	private static void showDialog(String message) {
@@ -84,7 +90,7 @@ public class SOAPClient {
 			}
 		} catch (SOAPFaultException e) {
 			//Invalid Token exception - shutting down
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 			System.out.println(BYE_MESSAGE);
 			System.exit(0);
 		}
@@ -116,7 +122,7 @@ public class SOAPClient {
 			servicePort.addActivity(activity);
 			System.out.println(ACTIVITY_ADDED_MESSAGE);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.err.println(e);
 		}
 	}
 

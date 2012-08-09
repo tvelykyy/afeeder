@@ -69,11 +69,16 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	public User getUserByLogin(String login, boolean withRoles, boolean withPassword) {
 		logger.debug(MessageFormatter.format("Retrieving user login = {}", login));
 		String query = withPassword ? GET_USER_BY_LOGIN_WITH_PASSWORD_QUERY : GET_USER_BY_LOGIN_QUERY;
-		User user = getJdbcTemplate().queryForObject(query, new Object[]{login}, 
-				new UserRowMapper());
-		if (withRoles) {
-			List<Role> roles = getUserRolesByLogin(login);
-			user.setRoles(roles);
+		User user;
+		try {
+			user = getJdbcTemplate().queryForObject(query, new Object[]{login}, 
+					new UserRowMapper());
+			if (withRoles) {
+				List<Role> roles = getUserRolesByLogin(login);
+				user.setRoles(roles);
+			}
+		} catch (Exception e) {
+			user = null;
 		}
 		return user;
 	}
