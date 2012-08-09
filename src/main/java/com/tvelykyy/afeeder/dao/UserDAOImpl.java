@@ -30,42 +30,45 @@ import com.tvelykyy.afeeder.domain.utils.UserUtils;
 public class UserDAOImpl extends AbstractDAO implements UserDAO {	
 	private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 	
-	private static final String getUserByLoginQuery = "SELECT id, name, login, token, last_token_usage " +
+	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT id, name, login, token, last_token_usage " +
 			"FROM `user` WHERE login = ?";
-	private static final String getUserByIdQuery = "SELECT id, name, login, token, last_token_usage " +
+	private static final String GET_USER_BY_ID_QUERY = "SELECT id, name, login, token, last_token_usage " +
 			"FROM `user` WHERE id = ?";
-	private static final String getUserByLoginWithPasswordQuery = "SELECT * FROM `user` WHERE login = ?";
-	private static final String getUserByIdWithPasswordQuery = "SELECT * FROM `user` WHERE id = ?";
-	private static final String getUserRolesByLogin = "SELECT r.id, r.name FROM `role` r " +
+	private static final String GET_USER_BY_LOGIN_WITH_PASSWORD_QUERY = "SELECT * FROM `user` WHERE login = ?";
+	private static final String GET_USER_BY_ID_WITH_PASSWORD_QUERY = "SELECT * FROM `user` WHERE id = ?";
+	private static final String GET_ROLES_BY_LOGIN = "SELECT r.id, r.name FROM `role` r " +
 			"INNER JOIN `user_role` ur on r.id = ur.role_id " +
 			"INNER JOIN `user` u on u.id = ur.user_id " +
 			"WHERE u.login = ?";
-	private static final String getUserRolesById = "SELECT r.id, r.name FROM `role` r " +
+	private static final String GET_ROLES_BY_ID = "SELECT r.id, r.name FROM `role` r " +
 			"INNER JOIN `user_role` ur on r.id = ur.role_id " +
 			"INNER JOIN `user` u on u.id = ur.user_id " +
 			"WHERE u.id = ?";
-	private static final String addUserQuery = "INSERT INTO `user` (login, password, name) " +
+	private static final String ADD_USER_QUERY = "INSERT INTO `user` (login, password, name) " +
 			"VALUES (:login, :password, :name, NULL, NULL)";
-	private static final String assignRoleForUserQuery = "INSERT INTO `user_role` (user_id, role_id) " +
+	private static final String ASSIGN_ROLE_FOR_USER_QUERY = "INSERT INTO `user_role` (user_id, role_id) " +
 			"VALUES (?, ?)";
-	private static final String generateTokenQuery = "UPDATE `user` SET token = ?, last_token_usage = now() " +
+	private static final String GENERATE_TOKEN_QUERY = "UPDATE `user` SET token = ?, last_token_usage = now() " +
 			"WHERE id = ?";
-	private static final String getTokenLastUsageQuery = "SELECT last_token_usage FROM user " +
-			"WHERE id = ?";
-	
-	private static final String getTokenQuery = "SELECT token FROM user " +
+	private static final String GET_LAST_TOKEN_USAGE_QUERY = "SELECT last_token_usage FROM user " +
 			"WHERE id = ?";
 	
-	private static final String getUserByTokenQuery = "SELECT id, login FROM `user` " +
+	private static final String GET_TOKEN_QUERY = "SELECT token FROM user " +
+			"WHERE id = ?";
+	
+	private static final String GET_USER_BY_TOKEN_QUERY = "SELECT id, login FROM `user` " +
 			"WHERE token = ?";
 	
+	private static final String UPDATE_TOKEN_USAGE_QUERY = "UPDATE `user` SET last_token_usage = now() " +
+			"WHERE id = ?";
+	
 	//Hardcoded
-	private static final String getUserRoleId = "SELECT id FROM `role` WHERE name = 'ROLE_USER'";
+	private static final String GET_USER_ROLE_ID = "SELECT id FROM `role` WHERE name = 'ROLE_USER'";
 
 	@Override
 	public User getUserByLogin(String login, boolean withRoles, boolean withPassword) {
 		logger.debug(MessageFormatter.format("Retrieving user login = {}", login));
-		String query = withPassword ? getUserByLoginWithPasswordQuery : getUserByLoginQuery;
+		String query = withPassword ? GET_USER_BY_LOGIN_WITH_PASSWORD_QUERY : GET_USER_BY_LOGIN_QUERY;
 		User user = getJdbcTemplate().queryForObject(query, new Object[]{login}, 
 				new UserRowMapper());
 		if (withRoles) {
@@ -78,7 +81,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	@Override
 	public User getUserById(Long id, boolean withRoles, boolean withPassword) {
 		logger.debug(MessageFormatter.format("Retrieving user id = {}", id));
-		String query = withPassword ? getUserByIdWithPasswordQuery : getUserByIdQuery;
+		String query = withPassword ? GET_USER_BY_ID_WITH_PASSWORD_QUERY : GET_USER_BY_ID_QUERY;
 		User user = getJdbcTemplate().queryForObject(query, new Object[]{id}, 
 				new UserRowMapper());
 		if (withRoles) {
@@ -91,7 +94,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	@Override
 	public List<Role> getUserRolesByLogin(String login) {
 		logger.debug(MessageFormatter.format("Retrieving user roles login = {}",login));
-		List<Role> roles = getJdbcTemplate().query(getUserRolesByLogin, new Object[]{login}, 
+		List<Role> roles = getJdbcTemplate().query(GET_ROLES_BY_LOGIN, new Object[]{login}, 
 				new RoleRowMapper());
 		return roles;
 	}
@@ -99,7 +102,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	@Override
 	public List<Role> getUserRolesById(Long id) {
 		logger.debug(MessageFormatter.format("Retrieving user roles id {} ", id));
-		List<Role> roles = getJdbcTemplate().query(getUserRolesById, new Object[]{id}, 
+		List<Role> roles = getJdbcTemplate().query(GET_ROLES_BY_ID, new Object[]{id}, 
 				new RoleRowMapper());
 		return roles;
 	}
@@ -111,12 +114,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	    KeyHolder keyHolder = new GeneratedKeyHolder();
 	    
 	    
-	    getNamedParameterJdbcTemplate().update(addUserQuery, parameters, keyHolder);
+	    getNamedParameterJdbcTemplate().update(ADD_USER_QUERY, parameters, keyHolder);
 	    Long userId = keyHolder.getKey().longValue();
 	    
 	    JdbcTemplate jdbcTemplate = getJdbcTemplate();
-	    Long roleId = jdbcTemplate.queryForLong(getUserRoleId);
-	    jdbcTemplate.update(assignRoleForUserQuery, new Object[]{userId, roleId});
+	    Long roleId = jdbcTemplate.queryForLong(GET_USER_ROLE_ID);
+	    jdbcTemplate.update(ASSIGN_ROLE_FOR_USER_QUERY, new Object[]{userId, roleId});
 	    
 	    return keyHolder.getKey().longValue();
 	}
@@ -129,20 +132,20 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 		digest.append(new Date());
 		String token = UserUtils.hashMD5(digest.toString());
 		
-		getJdbcTemplate().update(generateTokenQuery, new Object[]{token, user.getId()});
+		getJdbcTemplate().update(GENERATE_TOKEN_QUERY, new Object[]{token, user.getId()});
 		
 		return token;
 	}
 
 	@Override
 	public Timestamp getTokenLastUsage(long userId) {
-		return  getJdbcTemplate().queryForObject(getTokenLastUsageQuery, 
+		return  getJdbcTemplate().queryForObject(GET_LAST_TOKEN_USAGE_QUERY, 
 				new Object[]{userId}, Timestamp.class);
 	}
 
 	@Override
 	public String getToken(long userId) {
-		return  getJdbcTemplate().queryForObject(getTokenQuery, 
+		return  getJdbcTemplate().queryForObject(GET_TOKEN_QUERY, 
 				new Object[]{userId}, String.class);
 	}
 
@@ -150,10 +153,15 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 	public User getUserByToken(String token) {
 		User user;
 		try {
-			user = getJdbcTemplate().queryForObject(getUserByTokenQuery, new Object[]{token}, new UserRowMapper());
+			user = getJdbcTemplate().queryForObject(GET_USER_BY_TOKEN_QUERY, new Object[]{token}, new UserRowMapper());
 		} catch (Exception e) {
 			user = null;
 		}
 		return user;
+	}
+	
+	@Override
+	public void updateTokenUsage(long userId) {
+		getJdbcTemplate().update(UPDATE_TOKEN_USAGE_QUERY, new Object[]{userId});
 	}
 }

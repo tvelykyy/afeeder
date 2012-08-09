@@ -14,4 +14,5 @@ public interface UserService {
 	User generateToken(User user);
 	boolean isTokenValid(long userid);
 	User getUserByToken(String token);
+	void updateTokenUsage(long userId);
 }

@@ -10,7 +10,6 @@ import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.tvelykyy.afeeder.domain.Activity;
@@ -18,7 +17,7 @@ import com.tvelykyy.afeeder.domain.Group;
 import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.service.ActivityService;
 import com.tvelykyy.afeeder.service.GroupService;
-import com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor;
+import com.tvelykyy.afeeder.webservice.Const;
 
 //@org.apache.cxf.interceptor.InInterceptors (interceptors = {"com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor" })
 @Service("activityWebServiceEndpoint")
@@ -43,7 +42,7 @@ public class ActivityWebServiceEndpoint {
 		MessageContext mctx = wsctx.getMessageContext();
 		
 		Map http_headers = (Map) mctx.get(MessageContext.HTTP_REQUEST_HEADERS);
-        List<Object> tokenList = (List<Object>) http_headers.get(AuthInterceptor.AUTH_TOKEN);
+        List<Object> tokenList = (List<Object>) http_headers.get(Const.AUTH_TOKEN);
         Long userId = new Long(tokenList.get(0).toString());
         
 		//TODO user extraction by token

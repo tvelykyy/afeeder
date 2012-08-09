@@ -13,12 +13,13 @@ import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.service.UserService;
 import com.tvelykyy.afeeder.webservice.Const;
 
-public class AuthInterceptor extends AbstractPhaseInterceptor<Message> {
+public class UpdateTokenUsageInterceptor extends AbstractPhaseInterceptor<Message> {
 	@Autowired
 	UserService userService;
 	
-	public AuthInterceptor() {
-        super(Phase.RECEIVE);
+	public UpdateTokenUsageInterceptor() {
+		//Interceptor will be called after method invocation
+        super(Phase.POST_INVOKE);
     }
 	@Override
 	public void handleMessage(Message message) throws Fault {
@@ -29,27 +30,9 @@ public class AuthInterceptor extends AbstractPhaseInterceptor<Message> {
 			List<Object> tokenList = ((TreeMap<String, List<Object>>)message.get(Message.PROTOCOL_HEADERS))
 				.get(Const.AUTH_TOKEN);
 			
-			if(tokenList == null) {
-				throwFault();
-			}
 			
-			String token = (String) tokenList.get(0);
-			User user = userService.getUserByToken(token);
-			if (user == null) {
-				throwFault();
-			}
-			
-			boolean isTokenValid = userService.isTokenValid(user.getId());
-			if (!isTokenValid) {
-				throwFault();
-			}
-			
-			//Resetting AuthToken to contain userId
-			tokenList.set(0, user.getId());
+			long userId = new Long(tokenList.get(0).toString());
+			userService.updateTokenUsage(userId);
 		}
 	}
-	private void throwFault() {
-		throw new Fault(new Exception(Const.INVALID_TOKEN));
-	}
-
 }

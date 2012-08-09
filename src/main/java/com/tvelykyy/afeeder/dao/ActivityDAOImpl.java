@@ -22,32 +22,32 @@ import com.tvelykyy.afeeder.domain.mapper.ActivityRowMapper;
 public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {	
 	private static final Logger logger = LoggerFactory.getLogger(ActivityDAOImpl.class);
 
-	private static final String getAllActivitiesQuery = "SELECT a.id, text, user_id, u.name as user_name, group_id, " +
+	private static final String GET_ALL_ACTIVITIES_QUERY = "SELECT a.id, text, user_id, u.name as user_name, group_id, " +
 			"g.name as group_name " +
 			"FROM `activity` a " +
 			"INNER JOIN `user` u ON u.id = a.user_id " +
 			"INNER JOIN `group` g ON g.id = a.group_id ";
 	
-	private static final String getAllActivitiesSortedQuery = getAllActivitiesQuery +
+	private static final String GET_ALL_ACTIVITIES_SORTED_QUERY = GET_ALL_ACTIVITIES_QUERY +
 			"ORDER BY a.id DESC";
-	private static final String addActivityQuery = "INSERT INTO `activity` (text, user_id, group_id) VALUES(?, ?, ?)";
-	private static final String getActivitiesAfterQuery = getAllActivitiesQuery +
+	private static final String ADD_ACTIVITY_QUERY = "INSERT INTO `activity` (text, user_id, group_id) VALUES(?, ?, ?)";
+	private static final String GET_ALL_ACTIVITIES_AFTER_QUERY = GET_ALL_ACTIVITIES_QUERY +
 			"WHERE a.id > ? ";
-	private static final String getRangeActivitiesQuery = getActivitiesAfterQuery +
+	private static final String GET_RANGE_ACTIVITIES_QUERY = GET_ALL_ACTIVITIES_AFTER_QUERY +
 			"AND a.id < ?";
-	private static final String findActivitiesQuery = getAllActivitiesQuery +
+	private static final String FIND_ACTIVITIES_QUERY = GET_ALL_ACTIVITIES_QUERY +
 			"WHERE a.text LIKE ?";
 	
 	public List<Activity> listAllActivities() {
 		logger.debug("Loading activity list");
 		
-		return getJdbcTemplate().query(getAllActivitiesSortedQuery, new ActivityRowMapper());
+		return getJdbcTemplate().query(GET_ALL_ACTIVITIES_SORTED_QUERY, new ActivityRowMapper());
 	}
 
 	public List<Activity> listLatestActivities(Long afterId) {
 		logger.debug(MessageFormatter.format("Loading activity list after id = {}", afterId));
 		
-		return getJdbcTemplate().query(getActivitiesAfterQuery, new ActivityRowMapper() , new Object[] {afterId});
+		return getJdbcTemplate().query(GET_ALL_ACTIVITIES_AFTER_QUERY, new ActivityRowMapper() , new Object[] {afterId});
 	}
 
 	public Long addActivity(final Activity activity) {
@@ -56,7 +56,7 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
 			public java.sql.PreparedStatement createPreparedStatement(
 					java.sql.Connection con) throws SQLException {
-				PreparedStatement ps = con.prepareStatement(addActivityQuery);
+				PreparedStatement ps = con.prepareStatement(ADD_ACTIVITY_QUERY);
 				ps.setString(1, activity.getText());
 				ps.setLong(2, activity.getUser().getId());
 				ps.setLong(3, activity.getGroup().getId());
@@ -73,13 +73,13 @@ public class ActivityDAOImpl extends AbstractDAO implements ActivityDAO {
 	public List<Activity> listRangeActivities(Long startId, Long endId) {
 		logger.debug(MessageFormatter.format("Loading activity list start id = {} and end id = {}", startId, endId));
 		
-		return getJdbcTemplate().query(getRangeActivitiesQuery, new ActivityRowMapper() , new Object[] {startId, endId});
+		return getJdbcTemplate().query(GET_RANGE_ACTIVITIES_QUERY, new ActivityRowMapper() , new Object[] {startId, endId});
 	}
 	
 	public List<Activity> findActivities(String pattern) {
 		logger.debug(MessageFormatter.format("Finding activities by pattern = {}", pattern));
 		
-		return getJdbcTemplate().query(findActivitiesQuery, new ActivityRowMapper(), new Object[] {"%" + pattern + "%"});
+		return getJdbcTemplate().query(FIND_ACTIVITIES_QUERY, new ActivityRowMapper(), new Object[] {"%" + pattern + "%"});
 	}
 	
 }

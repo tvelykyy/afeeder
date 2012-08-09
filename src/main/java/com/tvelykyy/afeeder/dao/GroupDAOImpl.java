@@ -25,18 +25,18 @@ import com.tvelykyy.afeeder.domain.mapper.GroupRowMapper;
 public class GroupDAOImpl extends AbstractDAO implements GroupDAO {	
 	private static final Logger logger = LoggerFactory.getLogger(GroupDAOImpl.class);
 
-	private static final String getAllGroupsQuery = "SELECT * FROM `group`";
-	private static final String addGroupQuery = "INSERT INTO `group` (name) VALUES (:name)";
-	private static final String removeGroupQuery = "DELETE FROM `group` WHERE id = ?";
-	private static final String removeActivitiesByGroupQuery = "DELETE FROM `activity` WHERE group_id = ?";
-	private static final String editGroupQuery = "UPDATE `group` SET name = (:name) WHERE id = (:id)";
-	private static final String getGroupQuery = "SELECT * from `group` WHERE id = ?";
+	private static final String GET_ALL_GROUPS_QUERY = "SELECT * FROM `group`";
+	private static final String ADD_GROUP_QUERY = "INSERT INTO `group` (name) VALUES (:name)";
+	private static final String REMOVE_GROUP_QUERY = "DELETE FROM `group` WHERE id = ?";
+	private static final String REMOVE_ACTIVITIES_BY_GROUP_QUERY = "DELETE FROM `activity` WHERE group_id = ?";
+	private static final String EDIT_GROUP_QUERY = "UPDATE `group` SET name = (:name) WHERE id = (:id)";
+	private static final String GET_GROUP_QUERY = "SELECT * from `group` WHERE id = ?";
 	
 	@Transactional
 	public List<Group> listGroups() {
 		logger.debug("Loading group list");
 		
-		return getJdbcTemplate().query(getAllGroupsQuery, new GroupRowMapper());
+		return getJdbcTemplate().query(GET_ALL_GROUPS_QUERY, new GroupRowMapper());
 	}
 	
 	@Transactional
@@ -45,7 +45,7 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 		
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(group);
 	    KeyHolder keyHolder = new GeneratedKeyHolder();
-	    getNamedParameterJdbcTemplate().update(addGroupQuery, parameters, keyHolder);
+	    getNamedParameterJdbcTemplate().update(ADD_GROUP_QUERY, parameters, keyHolder);
 	    
 	    return keyHolder.getKey().longValue();
 	}
@@ -54,8 +54,8 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 	public void removeGroup(Long id){
 		logger.debug(MessageFormatter.format("Removing group id = {}", id));
 		JdbcTemplate jdbcTemplate = getJdbcTemplate();
-		jdbcTemplate.update(removeActivitiesByGroupQuery, id);
-		jdbcTemplate.update(removeGroupQuery, id);
+		jdbcTemplate.update(REMOVE_ACTIVITIES_BY_GROUP_QUERY, id);
+		jdbcTemplate.update(REMOVE_GROUP_QUERY, id);
 	}
 	
 	@Transactional
@@ -63,14 +63,14 @@ public class GroupDAOImpl extends AbstractDAO implements GroupDAO {
 		logger.debug(MessageFormatter.format("Editing group = {}",group));
 		
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(group);
-	    getNamedParameterJdbcTemplate().update(editGroupQuery, parameters);
+	    getNamedParameterJdbcTemplate().update(EDIT_GROUP_QUERY, parameters);
 	}
 	
 	@Transactional
 	public Group getGroup(Long id) {
 		logger.debug(MessageFormatter.format("Retrieving group id = {}", id));
 		try {
-			return getJdbcTemplate().queryForObject(getGroupQuery, new Object[] {id}, new GroupRowMapper());
+			return getJdbcTemplate().queryForObject(GET_GROUP_QUERY, new Object[] {id}, new GroupRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}

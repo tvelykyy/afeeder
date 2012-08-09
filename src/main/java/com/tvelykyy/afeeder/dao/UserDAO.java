@@ -16,4 +16,5 @@ public interface UserDAO {
 	Timestamp getTokenLastUsage(long userid);
 	User getUserByToken(String token);
 	String getToken(long userId);
+	void updateTokenUsage(long userId);
 }
