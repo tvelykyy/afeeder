@@ -41,51 +41,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListAllActivitiesResponse }
-     * 
-     */
-    public ListAllActivitiesResponse createListAllActivitiesResponse() {
-        return new ListAllActivitiesResponse();
-    }
-
-    /**
-     * Create an instance of {@link Group }
-     * 
-     */
-    public Group createGroup() {
-        return new Group();
-    }
-
-    /**
      * Create an instance of {@link ListAllGroupsResponse }
      * 
      */
     public ListAllGroupsResponse createListAllGroupsResponse() {
         return new ListAllGroupsResponse();
-    }
-
-    /**
-     * Create an instance of {@link ListAllGroups }
-     * 
-     */
-    public ListAllGroups createListAllGroups() {
-        return new ListAllGroups();
-    }
-
-    /**
-     * Create an instance of {@link Role }
-     * 
-     */
-    public Role createRole() {
-        return new Role();
-    }
-
-    /**
-     * Create an instance of {@link Activity }
-     * 
-     */
-    public Activity createActivity() {
-        return new Activity();
     }
 
     /**
@@ -105,11 +65,67 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AddActivityResponse }
+     * 
+     */
+    public AddActivityResponse createAddActivityResponse() {
+        return new AddActivityResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListAllGroups }
+     * 
+     */
+    public ListAllGroups createListAllGroups() {
+        return new ListAllGroups();
+    }
+
+    /**
+     * Create an instance of {@link ListAllActivitiesResponse }
+     * 
+     */
+    public ListAllActivitiesResponse createListAllActivitiesResponse() {
+        return new ListAllActivitiesResponse();
+    }
+
+    /**
      * Create an instance of {@link AddActivity }
      * 
      */
     public AddActivity createAddActivity() {
         return new AddActivity();
+    }
+
+    /**
+     * Create an instance of {@link FindActivitiesResponse }
+     * 
+     */
+    public FindActivitiesResponse createFindActivitiesResponse() {
+        return new FindActivitiesResponse();
+    }
+
+    /**
+     * Create an instance of {@link Timestamp }
+     * 
+     */
+    public Timestamp createTimestamp() {
+        return new Timestamp();
+    }
+
+    /**
+     * Create an instance of {@link Role }
+     * 
+     */
+    public Role createRole() {
+        return new Role();
+    }
+
+    /**
+     * Create an instance of {@link Group }
+     * 
+     */
+    public Group createGroup() {
+        return new Group();
     }
 
     /**
@@ -121,19 +137,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AddActivityResponse }
+     * Create an instance of {@link Activity }
      * 
      */
-    public AddActivityResponse createAddActivityResponse() {
-        return new AddActivityResponse();
-    }
-
-    /**
-     * Create an instance of {@link FindActivitiesResponse }
-     * 
-     */
-    public FindActivitiesResponse createFindActivitiesResponse() {
-        return new FindActivitiesResponse();
+    public Activity createActivity() {
+        return new Activity();
     }
 
     /**

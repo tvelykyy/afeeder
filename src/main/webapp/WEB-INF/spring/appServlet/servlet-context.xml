@@ -40,9 +40,9 @@
 	<context:component-scan base-package="com.tvelykyy.afeeder.web" />
 	<context:component-scan base-package="com.tvelykyy.afeeder.webservice" />
 	
-	<!--  <beans:bean id="authInterceptor" class="com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor"/>
+	<beans:bean id="authInterceptor" class="com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor"/>
 	
-	<cxf:bus>
+	<!-- <cxf:bus>
         <cxf:inInterceptors>
             <beans:ref bean="authInterceptor"/>
         </cxf:inInterceptors>
@@ -53,9 +53,13 @@
 	
 	<beans:bean id="soapWebService" class="com.tvelykyy.afeeder.webservice.soap.ActivityWebServiceEndpoint" />
 	
-	<jaxws:endpoint id="soapService" implementor="#soapWebService" />
-	
-	
+	<jaxws:endpoint id="soapService" implementor="#soapWebService">
+		<jaxws:inInterceptors>
+		      <beans:bean class="com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor"/>
+		      <beans:ref bean="authInterceptor"/>
+	    </jaxws:inInterceptors>
+	</jaxws:endpoint>
+    
     <!--<beans:bean class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">
     	<beans:property name="baseAddress" value="http://localhost:9999/" />
     </beans:bean> -->

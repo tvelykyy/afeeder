@@ -35,7 +35,7 @@ public class UserDetailsServiceTest {
 		User user = new User(new Long(1), "testLogin", "testPassword", "testName", new ArrayList<Role>());
 		
 		//First call returns user object, second call produces exception
-		when(userDAO.getUserByLogin(user.getLogin(), true))
+		when(userDAO.getUserByLogin(user.getLogin(), true, true))
 				.thenReturn(user)
 				.thenThrow(new UsernameNotFoundException("User not found"));
 		

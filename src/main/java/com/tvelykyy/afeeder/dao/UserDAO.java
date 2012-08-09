@@ -7,8 +7,8 @@ import com.tvelykyy.afeeder.domain.Role;
 import com.tvelykyy.afeeder.domain.User;
 
 public interface UserDAO {
-	User getUserByLogin(String login, boolean withRoles);
-	User getUserById(Long id, boolean withRoles);
+	User getUserByLogin(String login, boolean withRoles, boolean withPassword);
+	User getUserById(Long id, boolean withRoles, boolean withPassword);
 	List<Role> getUserRolesByLogin(String login);
 	List<Role> getUserRolesById(Long id);
 	Long addUser(User user);

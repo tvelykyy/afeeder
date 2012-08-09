@@ -19,10 +19,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;extension base="{http://soap.webservice.afeeder.tvelykyy.com/}baseModel">
  *       &lt;sequence>
+ *         &lt;element name="lastTokenUsage" type="{http://soap.webservice.afeeder.tvelykyy.com/}timestamp" minOccurs="0"/>
  *         &lt;element name="login" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="roles" type="{http://soap.webservice.afeeder.tvelykyy.com/}role" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -33,20 +35,48 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "user", propOrder = {
+    "lastTokenUsage",
     "login",
     "name",
     "password",
-    "roles"
+    "roles",
+    "token"
 })
 public class User
     extends BaseModel
 {
 
+    protected Timestamp lastTokenUsage;
     protected String login;
     protected String name;
     protected String password;
     @XmlElement(nillable = true)
     protected List<Role> roles;
+    protected String token;
+
+    /**
+     * Gets the value of the lastTokenUsage property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Timestamp }
+     *     
+     */
+    public Timestamp getLastTokenUsage() {
+        return lastTokenUsage;
+    }
+
+    /**
+     * Sets the value of the lastTokenUsage property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Timestamp }
+     *     
+     */
+    public void setLastTokenUsage(Timestamp value) {
+        this.lastTokenUsage = value;
+    }
 
     /**
      * Gets the value of the login property.
@@ -147,6 +177,30 @@ public class User
             roles = new ArrayList<Role>();
         }
         return this.roles;
+    }
+
+    /**
+     * Gets the value of the token property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Sets the value of the token property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setToken(String value) {
+        this.token = value;
     }
 
 }

@@ -12,7 +12,8 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/extended_menu.css"/>" />		
 	
 		<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.7.min.js"/>"></script>
-		<script type="text/javascript" src="<c:url value="/resources/js/menu.js"/>"></script> 				
+		<script type="text/javascript" src="<c:url value="/resources/js/menu.js"/>"></script>
+		<script type="text/javascript" src="<c:url value="/resources/js/dateformat.js"/>"></script>  				
 		
 		<script type="text/javascript">
 			$(document).ready(function () {

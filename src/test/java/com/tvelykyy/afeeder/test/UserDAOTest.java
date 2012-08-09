@@ -67,11 +67,11 @@ public class UserDAOTest extends BaseTest {
 		
 		User fetchedUser = null;
 		//Testing userDAO.getUserById
-		fetchedUser = userDAO.getUserById(user.getId(), false);
+		fetchedUser = userDAO.getUserById(user.getId(), false, true);
 		testUsersEquality(user, fetchedUser);
 		
 		//Testing userDAO.getUserByLogin
-		fetchedUser = userDAO.getUserByLogin(user.getLogin(), false);
+		fetchedUser = userDAO.getUserByLogin(user.getLogin(), false, true);
 		testUsersEquality(user, fetchedUser);
 	}
 

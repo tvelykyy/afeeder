@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throws UsernameNotFoundException {
 		
 		//Get user with roles
-		User user = userDAO.getUserByLogin(login, true);
+		User user = userDAO.getUserByLogin(login, true, true);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		} else {

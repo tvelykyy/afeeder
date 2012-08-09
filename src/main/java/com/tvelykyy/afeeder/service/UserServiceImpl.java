@@ -31,12 +31,12 @@ public class UserServiceImpl implements UserService {
 		return userDAO.getUserRolesById(id);
 	}
 	
-	public User getUserById(Long id, boolean withRoles){
-		return userDAO.getUserById(id, withRoles);
+	public User getUserById(Long id, boolean withRoles, boolean withPassword){
+		return userDAO.getUserById(id, withRoles, withPassword);
 	}
 	
-	public User getUserByLogin(String login, boolean withRoles){
-		return userDAO.getUserByLogin(login, withRoles);
+	public User getUserByLogin(String login, boolean withRoles, boolean withPassword){
+		return userDAO.getUserByLogin(login, withRoles, withPassword);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean checkTokenExpiration(long userId) {
+	public boolean isTokenValid(long userId) {
 		String token = userDAO.getToken(userId);
 		if (token != null) {
 			Timestamp tokenLastUsage = userDAO.getTokenLastUsage(userId);
@@ -60,12 +60,11 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return false;
-		
 	}
 
 	@Override
 	public User getUserByToken(String token) {
-		return null;
+		return userDAO.getUserByToken(token);
 	}
 
 }

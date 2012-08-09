@@ -11,7 +11,9 @@ $(document).ready(function () {
 			type: "POST",  
 		  	url: "<c:url value="/user/generatetoken"/>",
 		  	success: function(response) {
-		  		$('#token-td').html(response.result);
+		  		$('#token-td').html(response.result.token);
+		  		$('#last-token-usage-td').html(new Date(response.result.lastTokenUsage).format("yyyy-mm-dd hh:mm:ss"));
+		  		$('#token-active-td').html("true");
 		    },
 		    error: function(response) {
 		    	alert(response);
@@ -33,36 +35,35 @@ $(document).ready(function () {
 	</tr>
 	<tr>
 		<td><spring:message code="label.user_token" /></td>
+		<td id="token-td">
 		<c:choose>
 			<c:when test="${!empty user.token}">
-				<td id="token-td">${user.token}</td>
+				${user.token}
 			</c:when>
 			<c:otherwise>
-	  			<td><spring:message code="label.user_no_token"/></htd>
+	  			<spring:message code="label.user_no_token"/>
 			</c:otherwise>
 		</c:choose>
+		</td>
 	</tr>
 	<tr>
 		<td><spring:message code="label.user_last_token_usage" /></td>
-		<c:choose>
+		<td id="last-token-usage-td">
+		<c:choose>	
 			<c:when test="${!empty user.token}">
-				<td>${user.lastTokenUsage}</td>
+				${user.lastTokenUsage}
 			</c:when>
 			<c:otherwise>
-	  			<td><spring:message code="label.user_no_token_last_usage"/></htd>
+	  			<spring:message code="label.user_no_token_last_usage"/>
 			</c:otherwise>
-		</c:choose>	
+		</c:choose>
+		</td>
 	</tr>
 	<tr>
 		<td><spring:message code="label.user_is_token_active" /></td>
-		<td>${tokenActive}</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<input id="generate-token-button" type="button" 
-				value="<spring:message code="label.user_generate_token"/>"/>
-		</td>
+		<td id="token-active-td">${tokenActive}</td>
 	</tr>
 </table>
+<input id="generate-token-button" type="button" value="<spring:message code="label.user_generate_token"/>"/>
 
 

@@ -9,9 +9,9 @@ public interface UserService {
 	Long addUser(User user);
 	List<Role> getUserRolesByLogin(String login);
 	List<Role> getUserRolesById(Long id);
-	User getUserById(Long id, boolean withRoles);
-	User getUserByLogin(String login, boolean withRoles);
+	User getUserById(Long id, boolean withRoles, boolean withPassword);
+	User getUserByLogin(String login, boolean withRoles, boolean withPassword);
 	User generateToken(User user);
-	boolean checkTokenExpiration(long userid);
+	boolean isTokenValid(long userid);
 	User getUserByToken(String token);
 }

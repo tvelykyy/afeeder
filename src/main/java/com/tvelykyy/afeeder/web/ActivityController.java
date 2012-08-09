@@ -71,11 +71,11 @@ public class ActivityController {
 		
 		if (principal instanceof UserDetails) {
 			UserDetails userDetails = (UserDetails) principal;
-			activity.setUser(userService.getUserById(((SecurityUser)userDetails).getId(), false));
+			activity.setUser(userService.getUserById(((SecurityUser)userDetails).getId(), false, false));
 		//could be string with login
 		} else {
 			String login = (String) principal;
-			activity.setUser(userService.getUserByLogin(login, false));
+			activity.setUser(userService.getUserByLogin(login, false, false));
 		}
 		
 		activity.setGroup(groupService.getGroup(activity.getGroup().getId()));

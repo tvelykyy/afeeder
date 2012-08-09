@@ -1,8 +1,13 @@
 package com.tvelykyy.afeeder.webservice.soap.client;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.MessageContext;
 
 import com.tvelykyy.afeeder.webservice.soap.client.wsimported.Activity;
 import com.tvelykyy.afeeder.webservice.soap.client.wsimported.ActivityWebService;
@@ -26,7 +31,14 @@ public class SOAPClient {
 	private static Scanner scanner = new Scanner(System.in);
 	private static ActivityWebService servicePort = new ActivityWebServiceEndpointService()
 														.getActivityWebServicePort();
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+		String token = args[0];
+		Map<String, Object> req_ctx = ((BindingProvider)servicePort).getRequestContext();
+		
+		Map<String, List<String>> headers = new HashMap<String, List<String>>();
+        headers.put("AuthToken", Collections.singletonList(token));
+        req_ctx.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
+		
 		showDialog(welcomeMessage);
 	}
 

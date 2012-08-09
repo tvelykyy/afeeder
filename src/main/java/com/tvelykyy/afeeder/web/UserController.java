@@ -91,41 +91,40 @@ public class UserController {
 		
 		if (principal instanceof UserDetails) {
 			UserDetails userDetails = (UserDetails) principal;
-			user = userService.getUserById(((SecurityUser)userDetails).getId(), true);
+			user = userService.getUserById(((SecurityUser)userDetails).getId(), false, true);
 		//could be string with login
 		} else {
 			String login = (String) principal;
-			user = userService.getUserByLogin(login, true);
+			user = userService.getUserByLogin(login, false, true);
 		}
 		
 		model.put("user", user);
 		
-		boolean tokenActive = userService.checkTokenExpiration(user.getId());
+		boolean tokenActive = userService.isTokenValid(user.getId());
 		model.put("tokenActive", tokenActive);
 		return "userinfo";
 	}
 	
 	@RequestMapping(value = "user/generatetoken", method = RequestMethod.POST)
-	public @ResponseBody JsonResponse addActivity(){
+	public @ResponseBody JsonResponse generateToken(){
 		User user = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		if (principal instanceof UserDetails) {
 			UserDetails userDetails = (UserDetails) principal;
-			user = userService.getUserById(((SecurityUser)userDetails).getId(), false);
+			user = userService.getUserById(((SecurityUser)userDetails).getId(), false, true);
 		//could be string with login
 		} else {
 			String login = (String) principal;
-			user = userService.getUserByLogin(login, false);
+			user = userService.getUserByLogin(login, false, true);
 		}
 		
 		logger.debug(MessageFormatter.format("Generating new token for user = {}", user));
 		
 		JsonResponse res = new JsonResponse();
 		
-		
-		String token = userService.generateToken(user);
-		res.setSuccess(token);
+		user = userService.generateToken(user);
+		res.setSuccess(user);
 			 
 		return res;
 	}
