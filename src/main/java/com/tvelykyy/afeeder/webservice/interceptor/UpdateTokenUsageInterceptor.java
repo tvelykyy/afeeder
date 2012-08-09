@@ -9,7 +9,6 @@ import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.service.UserService;
 import com.tvelykyy.afeeder.webservice.Const;
 
@@ -29,7 +28,6 @@ public class UpdateTokenUsageInterceptor extends AbstractPhaseInterceptor<Messag
 		if (httpRequestMethod.equals("POST")) {
 			List<Object> tokenList = ((TreeMap<String, List<Object>>)message.get(Message.PROTOCOL_HEADERS))
 				.get(Const.AUTH_TOKEN);
-			
 			
 			long userId = new Long(tokenList.get(0).toString());
 			userService.updateTokenUsage(userId);
