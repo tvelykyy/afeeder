@@ -18,6 +18,30 @@ Features:
 12) After successful registration user user will be automatically logged in
 13) Group Management section available only for ROLE_ADMIN user
 14) Whole Group Management logic is implemented via AJAX requests (single page logic)
-15) Whole Service Layes is covered by unit tests
+15) Whole Service Layer is covered by unit tests
 16) Tiles Framework is used for page rendering 
 
+SOAP Webservices implementation:
+SOAP is implemented using JAX-WS Spring integration and Apache CXF.
+The service could be found on http://localhost:{port}/afeeder/ws
+WSDL - http://localhost:{port}/afeeder/ws?wsdl
+
+There are 3 main operations in web services:
+ - Retrieving list of all activities.
+ - Searching activities by text using simple sql `like` pattern.
+ - Posting new activity.
+
+To gain access to web services user should generate token for himself in `My Account`
+section of main application. Token expires 30 minutes after last usage.
+
+Token should be put in SOAP message headers with name 'AuthToken'.
+Web service authentication is implemented using interceptors, so auth process is separeted from
+ws logic. This interceptor doesn't provide security check on GET requests, so WSDL could be loaded
+without authentication.
+
+There are 2 interceptors: AuthInterceptor is invoked on setup phase of handling SOAP message.
+UpdateTokenUsageInterceptor is invoked after ws invocation. This interceptor updates tokes usage in DB.
+
+WS client is Java console application which provide full access to WS logic. Please, invoke client
+from command line with one argument (Auth Token should be passed).
+Client java files were generated with `wsimport` utility.
