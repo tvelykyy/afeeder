@@ -58,4 +58,15 @@
     	<beans:property name="baseAddress" value="http://localhost:9999/" />
     </beans:bean> -->
 	
+	<interceptors>
+	    <interceptor>
+	        <mapping path="/rest/**"/>
+	        <beans:bean class="com.tvelykyy.afeeder.webservice.rest.interceptor.AuthInterceptor" />
+	    </interceptor>
+	    <interceptor>
+	        <mapping path="/rest/**"/>
+	        <beans:bean class="com.tvelykyy.afeeder.webservice.rest.interceptor.UpdateTokenUsageInterceptor" />
+	    </interceptor>
+	</interceptors>
+	
 </beans:beans>

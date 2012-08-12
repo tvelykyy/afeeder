@@ -2,6 +2,8 @@ package com.tvelykyy.afeeder.webservice.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.tvelykyy.afeeder.domain.Activity;
 import com.tvelykyy.afeeder.domain.Group;
@@ -20,6 +21,7 @@ import com.tvelykyy.afeeder.domain.JsonResponse;
 import com.tvelykyy.afeeder.domain.User;
 import com.tvelykyy.afeeder.service.ActivityService;
 import com.tvelykyy.afeeder.service.GroupService;
+import com.tvelykyy.afeeder.webservice.Const;
 
 /**
  * Handles all REST logic
@@ -78,10 +80,11 @@ public class ActivityRESTController {
 	@RequestMapping(value = "add/activity", method = RequestMethod.POST,
 			produces = "application/json")
 	@ResponseBody
-	public JsonResponse addActivity(@ModelAttribute Activity activity) {
+	public JsonResponse addActivity(@ModelAttribute Activity activity, HttpServletRequest request) {
 		JsonResponse response = new JsonResponse();
 		try {
-			activity.setUser(new User(1L));
+			long userId = (Long)request.getAttribute(Const.AUTH_TOKEN);
+			activity.setUser(new User(userId));
 			
 			logger.debug(MessageFormatter.format("Adding new activity {}", activity));
 			

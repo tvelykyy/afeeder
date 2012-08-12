@@ -88,7 +88,7 @@ CREATE TABLE  `afeeder_test`.`user` (
   `password` char(32) NOT NULL,
   `name` varchar(20) NOT NULL,
   `token` char(32) DEFAULT NULL,
-  `last_token_usage` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_token_usage` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `token` (`token`)
@@ -97,8 +97,8 @@ CREATE TABLE  `afeeder_test`.`user` (
 --
 -- Dumping data for table `afeeder_test`.`user`
 --
-INSERT INTO `afeeder_test`.`user` VALUES   (1,'admin','5f4dcc3b5aa765d61d8327deb882cf99','Admin');
-INSERT INTO `afeeder_test`.`user` VALUES   (2,'user1','5f4dcc3b5aa765d61d8327deb882cf99','User1');
+INSERT INTO `afeeder_test`.`user` VALUES   (1,'admin','5f4dcc3b5aa765d61d8327deb882cf99','Admin', null, null);
+INSERT INTO `afeeder_test`.`user` VALUES   (2,'user1','5f4dcc3b5aa765d61d8327deb882cf99','User1', null, null);
 
 --
 -- Definition of table `afeeder_test`.`user_role`
