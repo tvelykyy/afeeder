@@ -40,25 +40,16 @@
 	<context:component-scan base-package="com.tvelykyy.afeeder.web" />
 	<context:component-scan base-package="com.tvelykyy.afeeder.webservice" />
 	
-	<beans:bean id="authInterceptor" class="com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor"/>
-	<beans:bean id="updateTokenUsageInterceptor" class="com.tvelykyy.afeeder.webservice.interceptor.UpdateTokenUsageInterceptor"/>
-	
-	<!-- <cxf:bus>
-        <cxf:inInterceptors>
-            <beans:ref bean="authInterceptor"/>
-        </cxf:inInterceptors>
-        <cxf:outInterceptors>
-            <beans:ref bean="authInterceptor"/>
-       </cxf:outInterceptors>
-    </cxf:bus>-->
+	<beans:bean id="authInterceptor" class="com.tvelykyy.afeeder.webservice.soap.interceptor.AuthInterceptor"/>
+	<beans:bean id="updateTokenUsageInterceptor" class="com.tvelykyy.afeeder.webservice.soap.interceptor.UpdateTokenUsageInterceptor"/>
 	
 	<beans:bean id="soapWebService" class="com.tvelykyy.afeeder.webservice.soap.ActivityWebServiceEndpoint" />
 	
 	<jaxws:endpoint id="soapService" implementor="#soapWebService">
 		<jaxws:inInterceptors>
-		      <beans:bean class="com.tvelykyy.afeeder.webservice.interceptor.AuthInterceptor"/>
+		      <beans:bean class="com.tvelykyy.afeeder.webservice.soap.interceptor.AuthInterceptor"/>
 		      <beans:ref bean="authInterceptor"/>
-		      <beans:bean class="com.tvelykyy.afeeder.webservice.interceptor.UpdateTokenUsageInterceptor"/>
+		      <beans:bean class="com.tvelykyy.afeeder.webservice.soap.interceptor.UpdateTokenUsageInterceptor"/>
 		      <beans:ref bean="updateTokenUsageInterceptor"/>
 	    </jaxws:inInterceptors>
 	</jaxws:endpoint>

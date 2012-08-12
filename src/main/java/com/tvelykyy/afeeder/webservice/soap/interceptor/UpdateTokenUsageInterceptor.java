@@ -1,4 +1,4 @@
-package com.tvelykyy.afeeder.webservice.interceptor;
+package com.tvelykyy.afeeder.webservice.soap.interceptor;
 
 import java.util.List;
 import java.util.TreeMap;
