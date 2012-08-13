@@ -13,6 +13,8 @@ import org.json.simple.JSONValue;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.tvelykyy.afeeder.webservice.AbstractClient;
@@ -26,6 +28,7 @@ public class RESTClient extends AbstractClient {
 	private static final String LIST_ALL_ACTIVITIES = "/activities";
 	private static final String LIST_ALL_GROUPS = "/groups";
 	private static final String FIND_ACTIVITIES = "/activities/search/{pattern}";
+	private static final String ADD_ACTIVITY = "/add/activity";
 
 	public static void main(String[] args) {
 		// One argument should be passed
@@ -96,7 +99,7 @@ public class RESTClient extends AbstractClient {
 		HttpEntity<String> response = template.exchange(BASE_URL
 				+ LIST_ALL_GROUPS, HttpMethod.GET, requestEntity,
 				String.class);
-		System.out.println(parseActivitiesList(response.getBody()));
+		System.out.println(parseGroupsList(response.getBody()));
 		
 		long groupId = 0;
 		
@@ -105,6 +108,17 @@ public class RESTClient extends AbstractClient {
 		} catch (Exception e) {
 			//Setting default group
 			groupId = 1;
+		}
+		
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add("text", actText);
+		map.add("group.id", groupId);
+		
+		try {
+			template.postForObject(ADD_ACTIVITY, map, String.class);
+			System.out.println(ACTIVITY_ADDED_MESSAGE);
+		} catch (Exception e) {
+			System.err.println(e);
 		}
 		
 	}
