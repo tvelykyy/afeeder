@@ -21,6 +21,8 @@ Features:
 15) Whole Service Layer is covered by unit tests
 16) Tiles Framework is used for page rendering 
 
+****************************************************SOAP*************************************************
+
 SOAP Webservices implementation:
 SOAP is implemented using JAX-WS Spring integration and Apache CXF.
 The service could be found on http://localhost:{port}/afeeder/ws
@@ -40,8 +42,33 @@ ws logic. This interceptor doesn't provide security check on GET requests, so WS
 without authentication.
 
 There are 2 interceptors: AuthInterceptor is invoked on setup phase of handling SOAP message.
-UpdateTokenUsageInterceptor is invoked after ws invocation. This interceptor updates tokes usage in DB.
+UpdateTokenUsageInterceptor is invoked after ws invocation. This interceptor updates token usage in DB.
 
 WS client is Java console application which provide full access to WS logic. Please, invoke client
 from command line with one argument (Auth Token should be passed).
 Client java files were generated with `wsimport` utility.
+
+****************************************************REST*************************************************
+
+REST Webservices implementation:
+REST service is implemented using Spring MVC.
+WADL for service could be found on http://localhost:{port}/afeeder/rest/wadl
+WADL generation is implemented with using external library
+Service url http://localhost:{port}/afeeder/rest*
+
+There are 3 main operations in web services:
+ - Retrieving list of all activities.
+ - Searching activities by text using simple sql `like` pattern.
+ - Posting new activity.
+
+To gain access to web services user should generate token for himself in `My Account`
+section of main application. Token expires 30 minutes after last usage.
+
+Token should be put in http request headers with name 'AuthToken'.
+Security token is covered in handler interceptor. The second interceptor UpdateTokenUsageInterceptor updates
+last token usage in DB.
+
+Every service request will be resulted in JSON response.
+
+WS client is Java console application which provide full access to WS logic. Please, invoke client
+from command line with one argument (Auth Token should be passed).
