@@ -10,28 +10,14 @@ import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.soap.SOAPFaultException;
 
+import com.tvelykyy.afeeder.webservice.AbstractClient;
 import com.tvelykyy.afeeder.webservice.soap.client.wsimported.Activity;
 import com.tvelykyy.afeeder.webservice.soap.client.wsimported.ActivityWebService;
 import com.tvelykyy.afeeder.webservice.soap.client.wsimported.ActivityWebServiceEndpointService;
 import com.tvelykyy.afeeder.webservice.soap.client.wsimported.Group;
 
-public class SOAPClient {
-	private static final String CHOOSE_MESSAGE = "Please choose operation:\n"
-			+ "Press 1 - to list all activies;\n"
-			+ "Press 2 - to search activies;\n"
-			+ "Press 3 - to add activity;\n"
-			+ "Press 0 - to quit.";
-	private static final String WELCOME_MESSAGE = "Welcome to afeeder SOAP client.";
-	private static final String INVALID_OPERATION_MESSAGE = "Invalid operation.";
-	private static final String BYE_MESSAGE = "Bye.";
-	private static final String INPUT_PATTERN_MESSAGE = "Input search pattern:";
-	private static final String EMPTY_LIST_MESSAGE = "Empty list";
-	private static final String INPUT_ACTIVITY_TEXT_MESSAGE = "Input Activity text:";
-	private static final String CHOOSE_GROUP_MESSAGE = "Choose group id:";
-	private static final String ACTIVITY_ADDED_MESSAGE = "Activity has been posted";
-	private static final String INVALID_INVOCATION_MESSAGE = "Invalid invocation. One parameter should be passed - Authorization Token.";
+public class SOAPClient extends AbstractClient {
 	
-	private static Scanner scanner = new Scanner(System.in);
 	private static ActivityWebService servicePort = new ActivityWebServiceEndpointService()
 														.getActivityWebServicePort();
 	public static void main(String[] args) {
@@ -49,8 +35,8 @@ public class SOAPClient {
 			showDialog(WELCOME_MESSAGE);
 		}
 	}
-
-	private static void showDialog(String message) {
+	
+	protected static void showDialog(String message) {
 		
 		if (message != null) {
 			System.out.println(message);
@@ -88,7 +74,7 @@ public class SOAPClient {
 					showDialog(INVALID_OPERATION_MESSAGE);
 					break;
 			}
-		} catch (SOAPFaultException e) {
+		} catch (Exception e) {
 			//Invalid Token exception - shutting down
 			System.err.println(e.getMessage());
 			System.out.println(BYE_MESSAGE);
@@ -96,7 +82,7 @@ public class SOAPClient {
 		}
 	}
 
-	private static void addActivity() {
+	protected static void addActivity() {
 		System.out.println(INPUT_ACTIVITY_TEXT_MESSAGE);
 		String actText = scanner.nextLine();
 		System.out.println(CHOOSE_GROUP_MESSAGE);
@@ -126,17 +112,18 @@ public class SOAPClient {
 		}
 	}
 
-	private static void findActivities() {
+	protected static void findActivities() {
 		System.out.println(INPUT_PATTERN_MESSAGE);
 		String pattern = scanner.nextLine();
 		List<Activity> searchResult = servicePort.findActivities(pattern);
 		System.out.println(activitiesListToString(searchResult));
 	}
 
-	private static void listAllActivities() {
+	protected static void listAllActivities() {
 		List<Activity> result = servicePort.listAllActivities();
 		System.out.println(activitiesListToString(result));
 	}
+	
 	
 	private static String activityToString(Activity activity) {
 		return String.format("%s %s: %s --- %s", activity.getId(), activity.getUser().getName(),
