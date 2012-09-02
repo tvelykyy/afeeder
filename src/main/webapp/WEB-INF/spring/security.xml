@@ -12,9 +12,7 @@
 		<intercept-url pattern="/login" access="hasRole('ROLE_ANONYMOUS')" />
 		<intercept-url pattern="/signup" access="hasRole('ROLE_ANONYMOUS')" />
 		<intercept-url pattern="/ws*" access="hasAnyRole('ROLE_ANONYMOUS', 'ROLE_ADMIN', 'ROLE_USER')" />
-		<intercept-url pattern="/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
-		<intercept-url pattern="/user/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
-		<intercept-url pattern="/activity*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
+		<intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
 		<intercept-url pattern="/group*" access="hasRole('ROLE_ADMIN')" />
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/login?error=true" />

@@ -34,7 +34,8 @@
 						<ul class="topnav">   
 							<li><a href="<c:url value="/"/>">Main</a></li>
 							<sec:authorize access="hasRole('ROLE_ADMIN')">  
-								<li><a href="<c:url value="/group"/>">Group Management</a></li> 
+								<li><a href="<c:url value="/group"/>">Group Management</a></li>
+								<li><a href="<c:url value="/solr/replicate"/>">Solr Management</a></li>  
 							</sec:authorize>
 							<li><a href="<c:url value="/user/info"/>">My Account</a></li>
 							<li><a href="<c:url value="/logout"/>">Logout</a></li> 

@@ -30,4 +30,9 @@
 		<put-attribute name="js" value="" />
 		<put-attribute name="body" value="/WEB-INF/views/userinfo.jsp" />
 	</definition>
+	
+	<definition name="solr" extends="base">
+		<put-attribute name="js" value="" />
+		<put-attribute name="body" value="/WEB-INF/views/solr.jsp" />
+	</definition>
 </tiles-definitions>

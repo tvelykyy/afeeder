@@ -5,9 +5,10 @@ import java.util.List;
 import com.tvelykyy.afeeder.domain.Activity;
 
 public interface ActivityDAO {
-	public List<Activity> listAllActivities();
-	public List<Activity> listLatestActivities(Long afterId);
-	public List<Activity> listRangeActivities(Long startId, Long endId);
-	public Long addActivity(Activity acitivity);
-	public List<Activity> findActivities(String pattern);
+	List<Activity> listAllActivities();
+	List<Activity> listLatestActivities(Long afterId);
+	List<Activity> listRangeActivities(Long startId, Long endId);
+	Long addActivity(Activity acitivity);
+	List<Activity> findActivities(String pattern);
+	Activity getActivityById(Long id);
 }

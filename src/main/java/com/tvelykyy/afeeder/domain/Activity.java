@@ -1,8 +1,12 @@
 package com.tvelykyy.afeeder.domain;
 
+import org.apache.solr.client.solrj.beans.Field;
+
 public class Activity extends BaseModel {
 	private User user;
 	private Group group;
+	
+	@Field
 	private String text;
 	
 	public Activity() {

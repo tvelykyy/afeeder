@@ -49,7 +49,7 @@ public class ActivityController {
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView listAllActivities(Map<String, Object> model) {
-		logger.debug("ActivityController: Loading activity list");
+		logger.debug("Loading activity list");
 		
 		ModelAndView mav = new ModelAndView("activity");
 		
@@ -122,7 +122,34 @@ public class ActivityController {
 			List<Activity> activities = activityService.listRangeActivities(startId, endId);
 			res.setSuccess(activities);
 		} catch (Exception e){
-			logger.warn(e.toString());
+			logger.warn(e.getMessage());
+			res.setFail(e);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * Renders SOLR replication page
+	 * @return
+	 */
+	@RequestMapping(value = "/solr/replicate", method = RequestMethod.GET)
+	public String renderSOLRReplicationPage() {
+		logger.debug("Rendering SOLR replication page");
+		
+		return "solr";
+	}
+	
+	@RequestMapping(value = "/solr/replicate", method = RequestMethod.POST)
+	public @ResponseBody JsonResponse solrReplicate() {
+		logger.debug("Replicating activities to SOLR engine");
+		
+		JsonResponse res = new JsonResponse();
+		try {
+			activityService.replicateActivitiesToSolr();
+			res.setSuccess("Done");
+		} catch (Exception e){
+			logger.warn(e.getMessage());
 			res.setFail(e);
 		}
 		
