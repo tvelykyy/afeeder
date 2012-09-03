@@ -8,7 +8,7 @@
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
-		<java-version>1.6</java-version>
+		<java-version>1.7</java-version>
 		<org.springframework-version>3.1.0.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.9</org.aspectj-version>
 		<org.slf4j-version>1.5.10</org.slf4j-version>
@@ -284,8 +284,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
@@ -307,12 +307,12 @@
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<stopKey>foo</stopKey>
 					<stopPort>9999</stopPort>
-					<!--  <systemProperties>
+					<systemProperties>
 						<systemProperty>
 							<name>solr.solr.home</name>
-							<value>/home/tvelykyy/solr/example/solr</value>
+							<value>/home/tvelykyy/solr/example/solr/</value>
 						</systemProperty>
-					</systemProperties>-->
+					</systemProperties>
 					<contextHandlers>
 						<contextHandler implementation="org.mortbay.jetty.webapp.WebAppContext">
 							<war>solr.war</war>

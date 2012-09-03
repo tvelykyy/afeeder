@@ -21,7 +21,7 @@ Features:
 15) Whole Service Layer is covered by unit tests
 16) Tiles Framework is used for page rendering 
 
-****************************************************SOAP*************************************************
+****************************************************SOAP***************************************
 
 SOAP Webservices implementation:
 SOAP is implemented using JAX-WS Spring integration and Apache CXF.
@@ -48,7 +48,7 @@ WS client is Java console application which provide full access to WS logic. Ple
 from command line with one argument (Auth Token should be passed).
 Client java files were generated with `wsimport` utility.
 
-****************************************************REST*************************************************
+****************************************************REST***************************************
 
 REST Webservices implementation:
 REST service is implemented using Spring MVC.
@@ -72,3 +72,24 @@ Every service request will be resulted in JSON response.
 
 WS client is Java console application which provide full access to WS logic. Please, invoke client
 from command line with one argument (Auth Token should be passed).
+
+****************************************************SOLR****************************************
+For now activity works via Solr engine. Entity schema is described in schema.xml which can be found
+in `resources` folder of current app and should be put in `conf` folder of your solr installation.
+
+Schema consists of 2 activity fields: `id` (stored, indexed) and `text` (only indexed). `Text` field 
+is indexed only, this means that search result contains only `id` value and rest activity data should
+be retrieved manually in service layer of app.
+
+Activity search function is available only through SOAP and REST webservices. Web interface doesn't support
+this for now.
+
+Also, users with admin account could replicate all data from database to SOLR engine with one click.
+See `SOLR management` in main menu.
+
+This app is developed using maven jetty plugin. Plugin is configured to deploy SOLR application also.
+But this expects some additional configuration in pom.xml
+
+Go to the <plugins> -> <plugin> -> <groupId>org.mortbay.jetty</groupId> -> <configuration>
+Change value <systemProperty> with `name solr.solr.name` to your SOLR distributive location.
+And also change <context-handler> section to point to solw.war location (<war>) and <contextPath>.
